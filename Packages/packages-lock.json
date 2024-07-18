@@ -5,17 +5,17 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "013bec2e3840e7ed3cd9cda3dd1f34f731a51a56"
+      "hash": "7814992732c7ed92e3d9a2a4d0d87f19727ebb95"
     },
     "com.eflatun.scenereference": {
-      "version": "git+https://github.com/starikcetin/Eflatun.SceneReference.git#4.0.0",
+      "version": "git+https://github.com/starikcetin/Eflatun.SceneReference.git#4.1.1",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.settings-manager": "2.0.1",
         "com.unity.nuget.newtonsoft-json": "3.0.2"
       },
-      "hash": "7dbcaf0327bcba279f2dcd07b824a693b1091beb"
+      "hash": "b849990020c30ac6ead4e4fb4881428f86dcde0d"
     },
     "com.unity.burst": {
       "version": "1.8.15",
