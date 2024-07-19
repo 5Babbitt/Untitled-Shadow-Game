@@ -5,7 +5,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "7814992732c7ed92e3d9a2a4d0d87f19727ebb95"
+      "hash": "98bf18ea78569bd782099bfba49d83601fc11ef0"
     },
     "com.eflatun.scenereference": {
       "version": "git+https://github.com/starikcetin/Eflatun.SceneReference.git#4.1.1",

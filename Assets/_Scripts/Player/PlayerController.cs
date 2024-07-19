@@ -36,9 +36,9 @@ public class PlayerController : MonoBehaviour
 
         Vector3 verticalVector = cam.transform.forward * moveInput.y;
         Vector3 horizontalVector = cam.transform.right * moveInput.x;
-        Vector3 moveVector = (verticalVector + horizontalVector).normalized;
+        Vector3 moveVector = (verticalVector + horizontalVector);
 
-        BroadcastMessage("Move", moveVector);
+        BroadcastMessage("Move", moveVector.normalized);
     }
 
     void OnSwitch(InputValue inputValue)
