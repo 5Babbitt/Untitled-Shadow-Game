@@ -6,6 +6,8 @@ using UnityEngine;
 /// </summary>
 public class ShadowMovement : MonoBehaviour
 {
+    // https://www.youtube.com/watch?v=OWvUWGHe9OY 
+
     [Header("Move Settings")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotationSpeed;
