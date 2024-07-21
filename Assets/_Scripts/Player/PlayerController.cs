@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
+
+        Switch();
     }
 
     void Update()
@@ -40,12 +42,7 @@ public class PlayerController : MonoBehaviour
         BroadcastMessage("Move", moveVector.normalized);
     }
 
-    void OnMove(InputValue inputValue)
-    {
-        moveInput = inputValue.Get<Vector2>();
-    }
-
-    void OnSwitch(InputValue inputValue)
+    void Switch()
     {
         if (isShadow)
             human.transform.position = shadow.transform.position;
@@ -56,5 +53,28 @@ public class PlayerController : MonoBehaviour
 
         human.SetActive(!isShadow);
         shadow.SetActive(isShadow);
+
+        human.GetComponent<PlayerMovement>().Switch(!isShadow);
+        shadow.GetComponent<PlayerMovement>().Switch(isShadow);
+    }
+
+    void OnMove(InputValue inputValue)
+    {
+        moveInput = inputValue.Get<Vector2>();
+    }
+
+    void OnCrouch(InputValue inputValue)
+    {
+
+    }
+
+    void OnInteract(InputValue inputValue) 
+    { 
+    
+    }
+
+    void OnSwitch(InputValue inputValue)
+    {
+        Switch();
     }
 }

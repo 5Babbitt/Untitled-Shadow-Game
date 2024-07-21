@@ -4,15 +4,13 @@ using UnityEngine;
 /// <summary>
 /// ShadowMovement
 /// </summary>
-public class ShadowMovement : MonoBehaviour
+public class ShadowMovement : PlayerMovement
 {
+    private Rigidbody rb;
 
     [Header("Move Settings")]
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float rotationSpeed;
-    private Vector3 targerPosition;
+    [SerializeField] private Vector3 targetPosition;
     private Quaternion targetRotation;
-    private Vector3 moveVector;
 
     [Header("Arc Cast Settings")]
     [SerializeField] float arcAngle = 270;
@@ -20,55 +18,60 @@ public class ShadowMovement : MonoBehaviour
     [SerializeField] int arcResolution = 8;
     [SerializeField] private LayerMask groundLayers;
 
-    // Debug Settings
-
     void Awake()
     {
-        
-    } 
-    
+        rb = GetComponent<Rigidbody>();
+    }
+
+    private void OnEnable()
+    {
+        targetPosition = transform.position;
+        targetRotation = transform.rotation;
+    }
+
     void Start()
     {
         
     }
 
-    void Update()
+    protected override void Update()
     {
-        HandleMove();
-        Rotate(moveVector.normalized);
+        base.Update();
     }
 
-    void HandleMove()
+    private void FixedUpdate()
+    {
+        //HandleMove();
+    }
+
+    protected override void HandleMove()
     {
         arcRadius = moveSpeed * moveVector.normalized.magnitude * Time.deltaTime;
 
         if (PhysicsUtils.ArcCast(transform.position, transform.rotation, arcAngle, arcRadius, arcResolution, groundLayers, out RaycastHit hit))
         {
-            targerPosition = hit.point;
+            targetPosition = hit.point;
             targetRotation = Quaternion.Slerp(transform.rotation, Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation, Time.deltaTime * rotationSpeed);
         }
 
+        //rb.MovePosition(targetPosition);
+        //rb.MoveRotation(targetRotation);
+        transform.position = targetPosition;
+        transform.rotation = targetRotation;
     }
 
-    private void Rotate(Vector3 vector)
+    protected override void HandleGravity()
     {
-        if (vector == Vector3.zero)
-            return;
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.ProjectOnPlane(vector, transform.up)), Time.deltaTime * rotationSpeed);
     }
 
-    void Move(Vector3 value)
+    public override void Switch(bool isEnabled)
     {
-        moveVector = value * moveSpeed;
+
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        PhysicsUtils.ArcCast(transform.position, transform.rotation, arcAngle, arcRadius, arcResolution, groundLayers, out RaycastHit hit, drawGizmos: true);
-        Gizmos.DrawSphere(hit.point, 0.1f);
-
         Gizmos.color = Color.cyan;
         Gizmos.DrawSphere(transform.position + moveVector, 0.2f);
 
@@ -77,5 +80,9 @@ public class ShadowMovement : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, transform.position + (transform.right * 3));
+
+        Gizmos.color = Color.yellow;
+        PhysicsUtils.ArcCast(transform.position, transform.rotation, arcAngle, arcRadius, arcResolution, groundLayers, out RaycastHit hit, drawGizmos: true);
+        Gizmos.DrawSphere(targetPosition, 0.25f);
     }
 }

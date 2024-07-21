@@ -3,21 +3,15 @@ using UnityEngine;
 /// <summary>
 /// HumanMovement
 /// </summary>
-public class HumanMovement : MonoBehaviour
+public class HumanMovement : PlayerMovement
 {
     CharacterController controller;
-
-    [Header("Move Settings")]
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float rotationSpeed;
 
     [Header("Crouch Settings")]
     [SerializeField] private float crouchSpeedModifier;
 
     [Header("Gravity Settings")]
     [SerializeField] private float gravityForce;
-
-    private Vector3 moveVector;
     
     void Awake()
     {
@@ -29,20 +23,9 @@ public class HumanMovement : MonoBehaviour
         
     }
 
-    void Update()
+    protected override void Update()
     {
-        HandleMove();
-        Rotate(moveVector.normalized);
-
-        if (!controller.isGrounded)
-        {
-            controller.Move(Vector3.down * gravityForce * Time.deltaTime);
-        }
-    }
-
-    void HandleMove()
-    {
-        controller.Move(moveVector * Time.deltaTime);
+        base.Update();
     }
 
     void Move(Vector3 value)
@@ -50,11 +33,21 @@ public class HumanMovement : MonoBehaviour
         moveVector = Vector3.ProjectOnPlane(value.normalized, Vector3.up) * moveSpeed;
     }
 
-    private void Rotate(Vector3 vector)
+    public override void Switch(bool isEnabled)
     {
-        if (vector == Vector3.zero)
-            return;
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(vector), Time.deltaTime * rotationSpeed);
+    }
+
+    protected override void HandleMove()
+    {
+        controller.Move(moveVector * Time.deltaTime);
+    }
+
+    protected override void HandleGravity()
+    {
+        if (!controller.isGrounded)
+        {
+            controller.Move(gravityForce * Time.deltaTime * Vector3.down);
+        }
     }
 }
