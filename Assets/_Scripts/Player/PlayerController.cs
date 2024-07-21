@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // CalculateMoveVector(moveInput);
+        CalculateMoveVector(moveInput);
     }
 
     void CalculateMoveVector(Vector2 move, bool drawGizmos = false, bool contstrainToPlayerUp = false)
@@ -63,7 +63,6 @@ public class PlayerController : MonoBehaviour
     {
         lastMoveInput = moveInput;
         moveInput = inputValue.Get<Vector2>();
-        CalculateMoveVector(moveInput);
     }
 
     void OnSwitch(InputValue inputValue)
