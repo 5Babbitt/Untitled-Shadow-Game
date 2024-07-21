@@ -11,6 +11,7 @@ public class ShadowMovement : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotationSpeed;
     private Vector3 targerPosition;
+    private Quaternion targetRotation;
     private Vector3 moveVector;
 
     [Header("Arc Cast Settings")]
@@ -39,12 +40,12 @@ public class ShadowMovement : MonoBehaviour
 
     void HandleMove()
     {
-        arcRadius = moveSpeed * moveVector.normalized.magnitude;
+        arcRadius = moveSpeed * moveVector.normalized.magnitude * Time.deltaTime;
 
-        if (PhysicsUtils.ArcCast(transform.position, transform.rotation, arcAngle, arcRadius * Time.deltaTime, arcResolution, groundLayers, out RaycastHit hit))
+        if (PhysicsUtils.ArcCast(transform.position, transform.rotation, arcAngle, arcRadius, arcResolution, groundLayers, out RaycastHit hit))
         {
             targerPosition = hit.point;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation, Time.deltaTime * rotationSpeed);
+            targetRotation = Quaternion.Slerp(transform.rotation, Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation, Time.deltaTime * rotationSpeed);
         }
 
     }
