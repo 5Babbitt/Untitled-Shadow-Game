@@ -12,7 +12,10 @@ public class HumanMovement : MonoBehaviour
     [SerializeField] private float rotationSpeed;
 
     [Header("Crouch Settings")]
-    [SerializeField] private float crouchSpeed;
+    [SerializeField] private float crouchSpeedModifier;
+
+    [Header("Gravity Settings")]
+    [SerializeField] private float gravityForce;
 
     private Vector3 moveVector;
     
@@ -30,6 +33,11 @@ public class HumanMovement : MonoBehaviour
     {
         HandleMove();
         Rotate(moveVector.normalized);
+
+        if (!controller.isGrounded)
+        {
+            controller.Move(Vector3.down * gravityForce * Time.deltaTime);
+        }
     }
 
     void HandleMove()

@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 776771403553043650}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.23746918, y: 0, z: 0, w: 0.9713951}
+  m_LocalRotation: {x: -0.23746914, y: 0, z: 0, w: 0.9713951}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 80
+    FieldOfView: 55
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -413,7 +413,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 7.5
   rotationSpeed: 7.5
-  crouchSpeed: 0
+  crouchSpeedModifier: 0.6666667
+  gravityForce: 15
 --- !u!1 &2896614410350210298
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,7 +604,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: c88a2750b0a4ce6438ddbffed36bfbe6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -798,8 +799,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4280975578642212391}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.27790895, y: 0, z: 0, w: 0.96060747}
-  m_LocalPosition: {x: 0, y: 0.000000044703484, z: 0}
+  m_LocalRotation: {x: -0.26264703, y: 0, z: 0, w: 0.964892}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -834,7 +835,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 80
+    FieldOfView: 55
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -1221,7 +1222,7 @@ MonoBehaviour:
   m_Follow: {fileID: 4009576212900201067}
   m_CommonLens: 1
   m_Lens:
-    FieldOfView: 80
+    FieldOfView: 55
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -1383,7 +1384,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: c88a2750b0a4ce6438ddbffed36bfbe6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1453,8 +1454,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7128465676321519450}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.31731328, y: 0, z: 0, w: 0.9483208}
-  m_LocalPosition: {x: 0, y: 0.000000044703484, z: 0}
+  m_LocalRotation: {x: -0.28751323, y: 0, z: 0, w: 0.95777667}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1489,7 +1490,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 80
+    FieldOfView: 55
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
