@@ -10,6 +10,10 @@ public class HumanMovement : MonoBehaviour
     [Header("Move Settings")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotationSpeed;
+
+    [Header("Crouch Settings")]
+    [SerializeField] private float crouchSpeed;
+
     private Vector3 moveVector;
     
     void Awake()
@@ -25,17 +29,16 @@ public class HumanMovement : MonoBehaviour
     void Update()
     {
         HandleMove();
+        Rotate(moveVector.normalized);
     }
 
     void HandleMove()
     {
         controller.Move(moveVector * Time.deltaTime);
-        Rotate(moveVector.normalized);
     }
 
     void Move(Vector3 value)
     {
-        Debug.Log($"Human Moving {value}");
         moveVector = Vector3.ProjectOnPlane(value.normalized, Vector3.up) * moveSpeed;
     }
 
