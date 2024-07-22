@@ -65,8 +65,6 @@ public class ShadowMovement : PlayerMovement
 
     protected override void HandleRotate(Vector3 vector)
     {
-        if (vector == Vector3.zero)
-            return;
 
         Vector3 forwardDirection = Vector3.ProjectOnPlane(moveVector.normalized, targetNormal);
         Vector3 upDirection = targetNormal;
@@ -89,19 +87,20 @@ public class ShadowMovement : PlayerMovement
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawSphere((transform.position + moveVector) / 2, 0.2f);
+        Gizmos.DrawLine(transform.position, transform.position + moveVector/2);
+        Gizmos.DrawSphere((transform.position + moveVector/2), 0.05f);
 
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, transform.position + (transform.forward * 3));
+        Gizmos.DrawLine(transform.position, transform.position + (transform.forward * 1));
 
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + (transform.right * 3));
+        Gizmos.DrawLine(transform.position, transform.position + (transform.right * 1));
 
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, transform.position + (transform.up * 3));
+        Gizmos.DrawLine(transform.position, transform.position + (transform.up * 1));
 
         Gizmos.color = Color.yellow;
         PhysicsUtils.ArcCast(transform.position, transform.rotation, arcAngle, moveSpeed / 4, arcResolution, groundLayers, out RaycastHit hit, drawGizmos: true);
-        Gizmos.DrawSphere(hit.point, 0.25f);
+        Gizmos.DrawSphere(hit.point, 0.05f);
     }
 }
