@@ -18,11 +18,11 @@ public class HumanMovement : PlayerMovement
     {
         base.Awake();
         controller = GetComponent<CharacterController>();
-    } 
-    
-    void Start()
+    }
+
+    private void OnEnable()
     {
-        
+        Debug.Log("Switched to human");
     }
 
     void Update()

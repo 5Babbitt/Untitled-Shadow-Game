@@ -34,8 +34,6 @@ public class ShadowMovement : PlayerMovement
 
     void Update()
     {
-        Debug.Log("Update on shadow");
-
         HandleGravity();
     }
 
@@ -65,6 +63,11 @@ public class ShadowMovement : PlayerMovement
 
     protected override void HandleRotate(Vector3 vector)
     {
+        if (vector == Vector3.zero)
+        {
+            rb.MoveRotation(targetRotation);
+            return;
+        }
 
         Vector3 forwardDirection = Vector3.ProjectOnPlane(moveVector.normalized, targetNormal);
         Vector3 upDirection = targetNormal;
