@@ -8,13 +8,15 @@ public class HumanMovement : PlayerMovement
     CharacterController controller;
 
     [Header("Crouch Settings")]
+    [SerializeField] private bool isCrouching;
     [SerializeField] private float crouchSpeedModifier;
 
     [Header("Gravity Settings")]
     [SerializeField] private float gravityForce;
-    
-    void Awake()
+
+    protected override void Awake()
     {
+        base.Awake();
         controller = GetComponent<CharacterController>();
     } 
     
@@ -23,12 +25,15 @@ public class HumanMovement : PlayerMovement
         
     }
 
-    protected override void Update()
+    void Update()
     {
-        base.Update();
+        HandleMove();
+        HandleRotate(moveVector.normalized);
+
+        HandleGravity();
     }
 
-    void Move(Vector3 value)
+    protected override void Move(Vector3 value)
     {
         moveVector = Vector3.ProjectOnPlane(value.normalized, Vector3.up) * moveSpeed;
     }
@@ -41,6 +46,14 @@ public class HumanMovement : PlayerMovement
     protected override void HandleMove()
     {
         controller.Move(moveVector * Time.deltaTime);
+    }
+
+    protected override void HandleRotate(Vector3 vector)
+    {
+        if (vector == Vector3.zero)
+            return;
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.ProjectOnPlane(vector, transform.up)), Time.deltaTime * rotationSpeed);
     }
 
     protected override void HandleGravity()
