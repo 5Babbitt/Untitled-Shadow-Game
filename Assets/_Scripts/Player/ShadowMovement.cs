@@ -7,6 +7,7 @@ using UnityEngine;
 public class ShadowMovement : PlayerMovement
 {
     private Rigidbody rb;
+    bool isValid;
 
     [SerializeField] private Vector3 targetPosition;
     [SerializeField] private Vector3 targetNormal;
@@ -57,6 +58,16 @@ public class ShadowMovement : PlayerMovement
         {
             targetPosition = hit.point;
             targetNormal = hit.normal;
+            isValid = true;
+        }
+        else
+        {
+            if (PhysicsUtils.ArcCast(transform.position, transform.rotation, arcAngle, arcRadius * 2, arcResolution, groundLayers, out RaycastHit nextHit))
+            {
+                targetPosition = nextHit.point;
+                targetNormal = hit.normal;
+            }
+            isValid = false;
         }
 
         rb.MovePosition(targetPosition);
@@ -71,8 +82,7 @@ public class ShadowMovement : PlayerMovement
         }
 
         Vector3 forwardDirection = Vector3.ProjectOnPlane(moveVector.normalized, targetNormal);
-        Vector3 upDirection = targetNormal;
-        targetRotation = Quaternion.LookRotation(forwardDirection, upDirection);
+        targetRotation = Quaternion.LookRotation(forwardDirection.normalized, targetNormal);
         lastTargetRotation = targetRotation;
         var currentRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
 
@@ -91,9 +101,8 @@ public class ShadowMovement : PlayerMovement
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(transform.position, transform.position + moveVector/2);
-        Gizmos.DrawSphere((transform.position + moveVector/2), 0.05f);
+        Gizmos.DrawLine(transform.position, transform.position + moveVector.normalized/2);
+        Gizmos.DrawSphere(transform.position + moveVector.normalized / 2, 0.05f);
 
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(transform.position, transform.position + (transform.forward * 1));
@@ -104,8 +113,9 @@ public class ShadowMovement : PlayerMovement
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position, transform.position + (transform.up * 1));
 
-        Gizmos.color = Color.yellow;
+        Gizmos.color = isValid ? Color.yellow : Color.cyan;
         PhysicsUtils.ArcCast(transform.position, transform.rotation, arcAngle, moveSpeed / 4, arcResolution, groundLayers, out RaycastHit hit, drawGizmos: true);
         Gizmos.DrawSphere(hit.point, 0.05f);
+        Gizmos.DrawLine(hit.point, hit.point + targetNormal.normalized);
     }
 }
