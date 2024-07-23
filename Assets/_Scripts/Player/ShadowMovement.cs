@@ -11,6 +11,7 @@ public class ShadowMovement : PlayerMovement
     [SerializeField] private Vector3 targetPosition;
     [SerializeField] private Vector3 targetNormal;
     [SerializeField] private Quaternion targetRotation;
+    private Quaternion lastTargetRotation;
 
     [Header("Arc Cast Settings")]
     [SerializeField] float arcAngle = 270;
@@ -65,16 +66,17 @@ public class ShadowMovement : PlayerMovement
     {
         if (vector == Vector3.zero)
         {
-            rb.MoveRotation(targetRotation);
+            rb.MoveRotation(Quaternion.Slerp(transform.rotation, lastTargetRotation, rotationSpeed * Time.fixedDeltaTime));
             return;
         }
 
         Vector3 forwardDirection = Vector3.ProjectOnPlane(moveVector.normalized, targetNormal);
         Vector3 upDirection = targetNormal;
-        Quaternion targetQuaternion = Quaternion.LookRotation(forwardDirection, upDirection);
-        targetRotation = Quaternion.Slerp(transform.rotation, targetQuaternion, rotationSpeed * Time.fixedDeltaTime);
+        targetRotation = Quaternion.LookRotation(forwardDirection, upDirection);
+        lastTargetRotation = targetRotation;
+        var currentRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
 
-        rb.MoveRotation(targetRotation);
+        rb.MoveRotation(currentRotation);
     }
 
     protected override void HandleGravity()
