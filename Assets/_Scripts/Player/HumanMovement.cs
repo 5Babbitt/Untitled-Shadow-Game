@@ -6,13 +6,21 @@ using UnityEngine;
 public class HumanMovement : PlayerMovement
 {
     CharacterController controller;
+    Animator animator;
+    [SerializeField] private float speedMultiplier = 1;
 
     [Header("Crouch Settings")]
+    [SerializeField] private GameObject walkModel;
+    [SerializeField] private GameObject crouchModel;
     [SerializeField] private bool isCrouching;
+    [SerializeField] private float walkHeight;
+    [SerializeField] private float crouchHeight;
     [SerializeField] private float crouchSpeedModifier;
 
     [Header("Gravity Settings")]
     [SerializeField] private float gravityForce;
+
+    public bool IsCrouching => isCrouching;
 
     protected override void Awake()
     {
@@ -29,18 +37,12 @@ public class HumanMovement : PlayerMovement
     {
         HandleMove();
         HandleRotate(moveVector.normalized);
-
         HandleGravity();
     }
 
     protected override void Move(Vector3 value)
     {
-        moveVector = Vector3.ProjectOnPlane(value.normalized, Vector3.up) * moveSpeed;
-    }
-
-    public override void Switch(bool isEnabled)
-    {
-
+        moveVector = Vector3.ProjectOnPlane(value.normalized, Vector3.up) * moveSpeed * speedMultiplier;
     }
 
     protected override void HandleMove()
@@ -53,7 +55,9 @@ public class HumanMovement : PlayerMovement
         if (vector == Vector3.zero)
             return;
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.ProjectOnPlane(vector, transform.up)), Time.deltaTime * rotationSpeed);
+        Quaternion targetRotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(vector, transform.up));
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
     }
 
     protected override void HandleGravity()
@@ -62,5 +66,22 @@ public class HumanMovement : PlayerMovement
         {
             controller.Move(gravityForce * Time.deltaTime * Vector3.down);
         }
+    }
+
+    void HandleCrouch()
+    {
+        Debug.Log("Human Crouched");
+        if (controller.height == walkHeight)
+            isCrouching = true;
+        else
+            isCrouching = false;
+
+        controller.height = isCrouching ? crouchHeight : walkHeight;
+        controller.center = new Vector3(0, controller.height / 2, 0);
+
+        speedMultiplier = isCrouching ? crouchSpeedModifier : 1f;
+
+        walkModel.SetActive(!isCrouching);
+        crouchModel.SetActive(isCrouching);
     }
 }

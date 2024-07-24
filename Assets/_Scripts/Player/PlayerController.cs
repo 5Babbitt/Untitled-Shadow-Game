@@ -53,10 +53,6 @@ public class PlayerController : MonoBehaviour
 
         human.SetActive(!isShadow);
         shadow.SetActive(isShadow);
-
-        human.GetComponent<PlayerMovement>().Switch(!isShadow);
-        shadow.GetComponent<PlayerMovement>().Switch(isShadow);
-        // BroadcastMessage("Switch", isShadow);
     }
 
     void Interact()
@@ -67,6 +63,7 @@ public class PlayerController : MonoBehaviour
     void Crouch()
     {
         Debug.Log("Crouch");
+        BroadcastMessage("HandleCrouch");
     }
 
     void OnMove(InputValue inputValue)

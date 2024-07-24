@@ -18,7 +18,6 @@ public abstract class PlayerMovement : MonoBehaviour
     }
 
     protected abstract void Move(Vector3 value);
-    public abstract void Switch(bool isEnabled);
     protected abstract void HandleMove();
     protected abstract void HandleGravity();
     protected abstract void HandleRotate(Vector3 vector);

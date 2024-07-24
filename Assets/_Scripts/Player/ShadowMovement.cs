@@ -64,11 +64,6 @@ public class ShadowMovement : PlayerMovement
         }
         else
         {
-            //if (PhysicsUtils.ArcCast(transform.position, transform.rotation, arcAngle, arcRadius * 2, arcResolution, groundLayers, out RaycastHit nextHit))
-            //{
-            //    targetPosition = nextHit.point;
-            //    targetNormal = hit.normal;
-            //}
             isValid = false;
         }
 
@@ -96,11 +91,6 @@ public class ShadowMovement : PlayerMovement
 
     }
 
-    public override void Switch(bool isEnabled)
-    {
-
-    }
-
     private void OnDrawGizmos()
     {
         Gizmos.DrawLine(transform.position, transform.position + moveVector.normalized/2);
@@ -115,8 +105,10 @@ public class ShadowMovement : PlayerMovement
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position, transform.position + (transform.up * 1));
 
+        Quaternion rotation = moveVector != Vector3.zero ? Quaternion.LookRotation(moveVector.normalized, transform.up) : transform.rotation;
+
         Gizmos.color = isValid ? Color.yellow : Color.cyan;
-        PhysicsUtils.ArcCast(transform.position, transform.rotation, arcAngle, moveSpeed / 4, arcResolution, groundLayers, out RaycastHit hit, drawGizmos: true);
+        PhysicsUtils.ArcCast(transform.position, rotation, arcAngle, moveSpeed, arcResolution, groundLayers, out RaycastHit hit, drawGizmos: true);
         Gizmos.DrawSphere(hit.point, 0.05f);
         Gizmos.DrawLine(hit.point, hit.point + targetNormal.normalized);
     }
