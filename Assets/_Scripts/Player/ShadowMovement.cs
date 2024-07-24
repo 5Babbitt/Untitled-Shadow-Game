@@ -10,13 +10,14 @@ public class ShadowMovement : PlayerMovement
     bool isValid;
 
     [SerializeField] private Vector3 targetPosition;
+    [SerializeField] private Vector3 targetDirection;
     [SerializeField] private Vector3 targetNormal;
     [SerializeField] private Quaternion targetRotation;
     private Quaternion lastTargetRotation;
 
     [Header("Arc Cast Settings")]
     [SerializeField] float arcAngle = 270;
-    private float arcRadius;
+    [SerializeField] private float arcRadius = 5;
     [SerializeField] int arcResolution = 8;
     [SerializeField] private LayerMask groundLayers;
 
@@ -52,9 +53,10 @@ public class ShadowMovement : PlayerMovement
 
     protected override void HandleMove()
     {
-        arcRadius = moveSpeed * moveVector.normalized.magnitude * Time.fixedDeltaTime;
+        float radius = arcRadius * moveVector.normalized.magnitude * Time.fixedDeltaTime;
+        Quaternion rotation = moveVector != Vector3.zero ? Quaternion.LookRotation(moveVector.normalized, transform.up) : transform.rotation;
 
-        if (PhysicsUtils.ArcCast(transform.position, transform.rotation, arcAngle, arcRadius, arcResolution, groundLayers, out RaycastHit hit))
+        if (PhysicsUtils.ArcCast(transform.position, rotation, arcAngle, radius, arcResolution, groundLayers, out RaycastHit hit))
         {
             targetPosition = hit.point;
             targetNormal = hit.normal;
@@ -62,15 +64,15 @@ public class ShadowMovement : PlayerMovement
         }
         else
         {
-            if (PhysicsUtils.ArcCast(transform.position, transform.rotation, arcAngle, arcRadius * 2, arcResolution, groundLayers, out RaycastHit nextHit))
-            {
-                targetPosition = nextHit.point;
-                targetNormal = hit.normal;
-            }
+            //if (PhysicsUtils.ArcCast(transform.position, transform.rotation, arcAngle, arcRadius * 2, arcResolution, groundLayers, out RaycastHit nextHit))
+            //{
+            //    targetPosition = nextHit.point;
+            //    targetNormal = hit.normal;
+            //}
             isValid = false;
         }
 
-        rb.MovePosition(targetPosition);
+        rb.MovePosition(MathUtils.LerpByDistance(transform.position, targetPosition, moveSpeed));
     }
 
     protected override void HandleRotate(Vector3 vector)

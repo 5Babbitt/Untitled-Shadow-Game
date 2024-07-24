@@ -336,9 +336,11 @@ MonoBehaviour:
   moveSpeed: 1.5
   rotationSpeed: 3
   targetPosition: {x: 0, y: 0, z: 0}
+  targetDirection: {x: 0, y: 0, z: 0}
   targetNormal: {x: 0, y: 0, z: 0}
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
   arcAngle: 270
+  arcRadius: 5
   arcResolution: 12
   groundLayers:
     serializedVersion: 2
@@ -821,13 +823,13 @@ MonoBehaviour:
   m_HorizontalDamping: 0.25
   m_VerticalDamping: 0.25
   m_ScreenX: 0.5
-  m_ScreenY: 0.687
+  m_ScreenY: 0.5
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_SoftZoneWidth: 0.8
   m_SoftZoneHeight: 0.8
   m_BiasX: 0
-  m_BiasY: -0.25
+  m_BiasY: 0
   m_CenterOnActivate: 1
 --- !u!1 &4280975578642212391
 GameObject:
