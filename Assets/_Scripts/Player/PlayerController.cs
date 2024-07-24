@@ -1,3 +1,4 @@
+using FiveBabbittGames;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,6 +16,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool isShadow;
     [SerializeField] private GameObject human;
     [SerializeField] private GameObject shadow;
+
+    private GameEvent onSound;
 
     void Awake()
     {

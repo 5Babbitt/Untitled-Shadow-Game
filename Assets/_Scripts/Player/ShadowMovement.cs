@@ -16,6 +16,9 @@ public class ShadowMovement : PlayerMovement
     [SerializeField] private Quaternion targetRotation;
     private Quaternion lastTargetRotation;
 
+    [Header("Shadow Settings")]
+    [SerializeField] private bool canSwitch;
+
     [Header("Arc Cast Settings")]
     [SerializeField] float arcAngle = 270;
     [SerializeField] private float arcRadius = 5;
@@ -35,12 +38,20 @@ public class ShadowMovement : PlayerMovement
         targetPosition = transform.position;
         targetRotation = transform.rotation;
 
+        if (!PhysicsUtils.ArcCast(transform.position, transform.rotation, arcAngle, arcRadius * Time.fixedDeltaTime, arcResolution, groundLayers, out RaycastHit hit))
+        {
+            if (Physics.Raycast(transform.position, Vector3.down, out hit, 1000, groundLayers))
+            {
+                transform.position = hit.point;
+            }
+        }
+
         Debug.Log("Switched to shadow");
     }
 
     void Update()
     {
-        HandleGravity();
+
     }
 
     private void FixedUpdate()
@@ -70,7 +81,7 @@ public class ShadowMovement : PlayerMovement
             isValid = false;
         }
 
-        rb.MovePosition(MathUtils.LerpByDistance(transform.position, targetPosition, moveSpeed));
+        rb.MovePosition(MathUtils.LerpByDistance(transform.position, targetPosition, Mathf.Clamp01(moveSpeed)));
     }
 
     protected override void HandleRotate(Vector3 vector)
@@ -94,7 +105,10 @@ public class ShadowMovement : PlayerMovement
 
     }
 
-
+    public bool CanSwitch()
+    {
+        return canSwitch;
+    }
 
     private void OnDrawGizmos()
     {
