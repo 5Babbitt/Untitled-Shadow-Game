@@ -1,3 +1,4 @@
+using Cinemachine;
 using FiveBabbittGames;
 using UnityEngine;
 
@@ -25,6 +26,8 @@ public class ShadowMovement : PlayerMovement
     {
         base.Awake();
         rb = GetComponent<Rigidbody>();
+
+        Camera.main.GetComponent<CinemachineBrain>().m_WorldUpOverride = transform;
     }
 
     private void OnEnable()
@@ -90,6 +93,8 @@ public class ShadowMovement : PlayerMovement
     {
 
     }
+
+
 
     private void OnDrawGizmos()
     {
