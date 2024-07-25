@@ -38,6 +38,7 @@ public class HumanMovement : PlayerMovement
         HandleMove();
         HandleRotate(moveVector.normalized);
         HandleGravity();
+       // Debug.Log(this.transform.position);
     }
 
     protected override void Move(Vector3 value)

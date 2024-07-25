@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
 
-public class StateMachine : MonoBehaviour
+public class StateMachine
 {
     // Start is called before the first frame update
     StateNode current;
@@ -66,11 +63,17 @@ public class StateMachine : MonoBehaviour
     public void AddAnyTransition(IState to, IPredicate condition)
     {
         anyTransitions.Add(item:new Transition(to, condition));
+        GetOrAddNode(to);
     }
 
-    public void AddTransition(IState from, IState to,IPredicate condition)
+    public void AddTransition(IState from, IState to, IPredicate condition)
     {
         GetOrAddNode(from).AddTransition(GetOrAddNode(to).State, condition);
+    }
+
+    public void AddStateToDict()
+    {
+        
     }
 
     StateNode GetOrAddNode(IState state)
