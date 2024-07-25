@@ -17,7 +17,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private HumanMovement human;
     [SerializeField] private ShadowMovement shadow;
 
-    private GameEvent onSound;
+    private PlayerMovement activePlayerMovement;
+    public PlayerMovement CurrentActivePlayer => activePlayerMovement;
 
     void Awake()
     {
@@ -64,6 +65,8 @@ public class PlayerController : MonoBehaviour
 
         human.gameObject.SetActive(!isShadow);
         shadow.gameObject.SetActive(isShadow);
+
+        activePlayerMovement = isShadow ? shadow : human;
     }
 
     void Interact()
