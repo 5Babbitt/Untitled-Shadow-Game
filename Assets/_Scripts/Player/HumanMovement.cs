@@ -84,4 +84,22 @@ public class HumanMovement : PlayerMovement
         walkModel.SetActive(!isCrouching);
         crouchModel.SetActive(isCrouching);
     }
+
+    void Crouch(bool value)
+    {
+        controller.height = value ? crouchHeight : walkHeight;
+        controller.center = new Vector3(0, controller.height / 2, 0);
+
+        speedMultiplier = value ? crouchSpeedModifier : 1f;
+
+        walkModel.SetActive(!value);
+        crouchModel.SetActive(value);
+    }
+
+    public void SetIsCrouching(bool value)
+    {
+        isCrouching = value;
+
+        Crouch(isCrouching);
+    }
 }

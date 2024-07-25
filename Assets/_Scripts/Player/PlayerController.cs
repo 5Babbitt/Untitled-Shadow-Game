@@ -14,14 +14,15 @@ public class PlayerController : MonoBehaviour
 
     [Header("Player Settings")]
     [SerializeField] private bool isShadow;
-    [SerializeField] private GameObject human;
-    [SerializeField] private GameObject shadow;
+    [SerializeField] private HumanMovement human;
+    [SerializeField] private ShadowMovement shadow;
 
     private GameEvent onSound;
 
     void Awake()
     {
-
+        human = GetComponentInChildren<HumanMovement>();
+        shadow = GetComponentInChildren<ShadowMovement>();
     } 
     
     void Start()
@@ -47,6 +48,13 @@ public class PlayerController : MonoBehaviour
 
     void Switch(bool value)
     {
+        if (isShadow && !shadow.CanSwitch())
+        {
+            Debug.Log("Unable to switch to human here");
+            return;
+
+        }
+
         if (value)
             human.transform.position = shadow.transform.position;
         else
@@ -54,8 +62,8 @@ public class PlayerController : MonoBehaviour
 
         isShadow = !value;
 
-        human.SetActive(!isShadow);
-        shadow.SetActive(isShadow);
+        human.gameObject.SetActive(!isShadow);
+        shadow.gameObject.SetActive(isShadow);
     }
 
     void Interact()

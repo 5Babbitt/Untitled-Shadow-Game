@@ -18,12 +18,17 @@ public class ShadowMovement : PlayerMovement
 
     [Header("Shadow Settings")]
     [SerializeField] private bool canSwitch;
+    [SerializeField] private bool canSwitchCrouched;
 
     [Header("Arc Cast Settings")]
     [SerializeField] float arcAngle = 270;
-    [SerializeField] private float arcRadius = 5;
     [SerializeField] int arcResolution = 8;
+    [SerializeField] private float arcRadius = 5;
     [SerializeField] private LayerMask groundLayers;
+
+    [Header("Check Settings")]
+    [SerializeField] private float checkRadius = 0.4f;
+    [SerializeField] private float checkHeight = 0.4f;
 
     protected override void Awake()
     {
@@ -35,16 +40,18 @@ public class ShadowMovement : PlayerMovement
 
     private void OnEnable()
     {
-        targetPosition = transform.position;
-        targetRotation = transform.rotation;
-
         if (!PhysicsUtils.ArcCast(transform.position, transform.rotation, arcAngle, arcRadius * Time.fixedDeltaTime, arcResolution, groundLayers, out RaycastHit hit))
         {
+            Debug.Log("Arc Cast False On Switch");
             if (Physics.Raycast(transform.position, Vector3.down, out hit, 1000, groundLayers))
             {
+                Debug.Log("Ground Found Below");
                 transform.position = hit.point;
             }
         }
+
+        targetPosition = transform.position;
+        targetRotation = transform.rotation;
 
         Debug.Log("Switched to shadow");
     }
@@ -58,11 +65,6 @@ public class ShadowMovement : PlayerMovement
     {
         HandleRotate(moveVector.normalized);
         HandleMove();
-    }
-
-    protected override void Move(Vector3 value)
-    {
-        moveVector = Vector3.ProjectOnPlane(value.normalized, transform.up) * moveSpeed;
     }
 
     protected override void HandleMove()
@@ -105,24 +107,40 @@ public class ShadowMovement : PlayerMovement
 
     }
 
-    public bool CanSwitch()
+    protected override void Move(Vector3 value)
     {
-        return canSwitch;
+        moveVector = Vector3.ProjectOnPlane(value.normalized, transform.up) * moveSpeed;
+    }
+
+    public bool CanSwitch(bool drawGizmos = false)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (drawGizmos)
+            {
+                Gizmos.DrawWireSphere(transform.position + ((Vector3.up * 1.001f) * checkHeight * ((i * 2) + 1)), checkRadius);
+            }
+
+            if (Physics.CheckSphere(transform.position + ((Vector3.up * 1.001f) * checkHeight * ((i * 2) + 1)), checkRadius, groundLayers))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawLine(transform.position, transform.position + moveVector.normalized/2);
+        Gizmos.DrawLine(transform.position, transform.position + moveVector.normalized / 2);
         Gizmos.DrawSphere(transform.position + moveVector.normalized / 2, 0.05f);
 
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, transform.position + (transform.forward * 1));
-
+        Gizmos.DrawLine(transform.position, transform.position + (transform.forward));
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + (transform.right * 1));
-
+        Gizmos.DrawLine(transform.position, transform.position + (transform.right));
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, transform.position + (transform.up * 1));
+        Gizmos.DrawLine(transform.position, transform.position + (transform.up));
 
         Quaternion rotation = moveVector != Vector3.zero ? Quaternion.LookRotation(moveVector.normalized, transform.up) : transform.rotation;
 
@@ -130,5 +148,8 @@ public class ShadowMovement : PlayerMovement
         PhysicsUtils.ArcCast(transform.position, rotation, arcAngle, moveSpeed, arcResolution, groundLayers, out RaycastHit hit, drawGizmos: true);
         Gizmos.DrawSphere(hit.point, 0.05f);
         Gizmos.DrawLine(hit.point, hit.point + targetNormal.normalized);
+
+        Gizmos.color = Color.magenta;
+        CanSwitch(true);
     }
 }
