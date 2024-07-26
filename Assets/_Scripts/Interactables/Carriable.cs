@@ -8,19 +8,28 @@ public class Carriable : Interactable
     public bool isCarried;
     public Collider interactableCollider;
 
+    public KeyData KeyData;
+
+    public override void Start()
+    {
+        base.Start();
+        interactableCollider = GetComponent<Collider>();
+    }
+
     public override void OnInteract(PlayerInteractor interactingPlayer)
     {
+        if (interactingPlayer.GetCarriable() != null) 
+            return;
+
         base.OnInteract(interactingPlayer);
+
         if (isCarried)
         {
-            interactableCollider.enabled = false;
-            transform.SetParent(null);
+            Drop(interactingPlayer);
         }
         else
         {
-            interactableCollider.enabled = true;
-            transform.position = player.carrySlot.transform.position;
-            transform.SetParent(player.carrySlot.transform);
+            PickUp(interactingPlayer);
         }
     }
 
@@ -34,5 +43,24 @@ public class Carriable : Interactable
     {
         base.OnLoseFocus();
 
+    }
+
+    public void PickUp(PlayerInteractor interactingPlayer)
+    {
+        isCarried = true;
+        interactableCollider.enabled = false;
+        GetComponent<Rigidbody>().isKinematic = true;
+        transform.SetParent(player.carrySlot.carryTransform);
+        transform.position = player.carrySlot.carryTransform.position;
+        interactingPlayer.SetCarriable(this);
+    }
+
+    public void Drop(PlayerInteractor interactingPlayer)
+    {
+        isCarried = false;
+        interactableCollider.enabled = true;
+        GetComponent<Rigidbody>().isKinematic = false;
+        transform.SetParent(null);
+        interactingPlayer.SetCarriable(null);
     }
 }

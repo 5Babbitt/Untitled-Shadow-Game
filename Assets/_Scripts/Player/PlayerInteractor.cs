@@ -15,11 +15,11 @@ public class PlayerInteractor : MonoBehaviour
     [SerializeField] private float interactHeight;
     [SerializeField] private float interactRadius;
 
-    private Interactable currentInteractable;
+    [SerializeField] private Interactable currentInteractable;
     private Vector3 forwardVector;
     private Vector3 upVector;
 
-    [SerializeField] public CarrySlot carrySlot;
+    public CarrySlot carrySlot;
 
     void Awake()
     {
@@ -52,21 +52,47 @@ public class PlayerInteractor : MonoBehaviour
         }
     }
 
+    void OnSwitch()
+    {
+
+    }
+
+    public Carriable GetCarriable()
+    {
+        return carrySlot.carryItem;
+    }
+
+    public void SetCarriable(Carriable carriable)
+    {
+        carrySlot.carryItem = carriable;
+    }
+
+    public void ClearInteractable()
+    {
+        currentInteractable = null;
+    }
+
     void HandleInteract()
     {
         if (currentInteractable == null)
+        {
+            if (carrySlot.carryItem != null)
+            {
+                carrySlot.Drop();
+            }
             return;
+        }
 
         if (player.CurrentActivePlayer is HumanMovement)
         {
             Debug.Log("Human Interact");
+
             currentInteractable.OnInteract(this);
 
         }
         else if (player.CurrentActivePlayer is ShadowMovement)
         {
             Debug.Log("Shadow Interact");
-            currentInteractable.OnInteract(this);
         }
     }
 
