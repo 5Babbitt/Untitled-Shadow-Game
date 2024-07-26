@@ -16,11 +16,13 @@ public class Placeable : Interactable
 
     public override void OnFocus()
     {
+        base.OnFocus();
 
     }
 
     public override void OnLoseFocus()
     {
+        base.OnLoseFocus();
 
     }
 

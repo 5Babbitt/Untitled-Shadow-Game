@@ -19,6 +19,8 @@ public class PlayerInteractor : MonoBehaviour
     private Vector3 forwardVector;
     private Vector3 upVector;
 
+    [SerializeField] public CarrySlot carrySlot;
+
     void Awake()
     {
         player = transform.root.GetComponent<PlayerController>();

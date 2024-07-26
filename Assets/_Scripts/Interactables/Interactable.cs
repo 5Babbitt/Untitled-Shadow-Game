@@ -6,20 +6,34 @@ using UnityEngine;
 /// </summary>
 public abstract class Interactable : MonoBehaviour
 {
-    public TMP_Text useText;
+    [Header("Interact Text Settings")]
+    public TMP_Text textDisplay;
+    public string useText;
+
+    protected PlayerInteractor player;
 
     public virtual void OnInteract(PlayerInteractor interactingPlayer)
     {
+        player = interactingPlayer;
         Debug.Log(interactingPlayer + " interacted with" + name);
     }
 
-    public abstract void OnFocus();
-    public abstract void OnLoseFocus();
+    public virtual void OnFocus()
+    {
+        textDisplay.text = useText;
+    }
+
+    public virtual void OnLoseFocus()
+    {
+        textDisplay.text = null;
+        player = null;
+    }
 
     public virtual void Start()
     {
         gameObject.layer = 11;
 
-        // useText = UIManager.Instance.GetUseText();
+        textDisplay = GetComponentInChildren<TMP_Text>();
+        textDisplay.text = null;
     }
 }
