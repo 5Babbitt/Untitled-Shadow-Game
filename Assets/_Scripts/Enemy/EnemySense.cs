@@ -1,7 +1,5 @@
 using FiveBabbittGames;
-using Platformer;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class EnemySense : MonoBehaviour
@@ -12,21 +10,46 @@ public class EnemySense : MonoBehaviour
     [SerializeField] float detectCooldown = 1f;
     public Transform player;
     public CountdownTimer detectionTimer;
-    private HumanMovement playerController;
+    private PlayerController playerController;
     IDetectionStrategy detectionStrategy;
-
+    public Room currentRoom;
+    public bool inRoom = false;
+    public event Action<Transform,Room> SusOccurance;
+    public float EventDetectionRange = 100f;
+    public bool eventHeardOutOfRoom = false;
+    public bool eventHeardInRoom = false;
     private void Start()
     {
         detectionTimer = new CountdownTimer(detectCooldown);
-        playerController = FindAnyObjectByType<HumanMovement>();
+        playerController = FindAnyObjectByType<PlayerController>();
         
         detectionStrategy = new ConeDetectionStrategy(detectionAngle, detectionRadius, innerDetectionRadius);
+        SusOccurance += OnTransformReceived;
+    }
+
+    private void OnTransformReceived(Transform eventTransform,Room detectedRoom)
+    {
+        var distanceToTarget = Vector3.Distance(transform.position, eventTransform.position);
+
+        // If the target is within the detection radius, start the timer
+        if (distanceToTarget < EventDetectionRange)
+        {
+            if(currentRoom != detectedRoom)
+            {
+                eventHeardOutOfRoom = true;
+            }
+            else
+            {
+                eventHeardInRoom = true;
+            }
+            
+        }
     }
 
     public void Update()
     {
         detectionTimer.Tick(Time.deltaTime);
-        player = playerController.transform;
+        player = playerController.CurrentActivePlayer.transform;
        // Debug.Log($"According to sense, player is {player.position}");
     }  
 

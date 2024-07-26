@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -12,8 +13,19 @@ public class Enemy : MonoBehaviour
     public EnemySense enemySense;
     StateMachine stateMachine;
 
-    //   private void OnValidate() => this.ValidateRefs();
 
+    [Serializable]
+    public class Substates
+    {
+        
+        public enum Substate
+        {
+            CheckingEvent, CheckingPotentialPoints, CheckingRandomPoints
+        }
+        public Substate state;
+        public float stateTime;
+    }
+    public List<Substates> substates = new List<Substates>();
     private void Awake()
     {
         SetPatrolPoints();
