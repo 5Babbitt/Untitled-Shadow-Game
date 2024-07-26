@@ -103,4 +103,10 @@ public class HumanMovement : PlayerMovement
 
         Crouch(isCrouching);
     }
+
+    private void OnValidate()
+    {
+        controller = GetComponent<CharacterController>();
+        SetIsCrouching(isCrouching);
+    }
 }

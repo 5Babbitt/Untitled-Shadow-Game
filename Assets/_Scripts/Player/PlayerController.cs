@@ -20,6 +20,13 @@ public class PlayerController : MonoBehaviour
     private PlayerMovement activePlayerMovement;
     public PlayerMovement CurrentActivePlayer => activePlayerMovement;
 
+    private void OnValidate()
+    {
+        human = GetComponentInChildren<HumanMovement>();
+        shadow = GetComponentInChildren<ShadowMovement>();
+
+    }
+
     void Awake()
     {
         human = GetComponentInChildren<HumanMovement>();
@@ -71,7 +78,8 @@ public class PlayerController : MonoBehaviour
 
     void Interact()
     {
-
+        Debug.Log("Interact");
+        BroadcastMessage("HandleInteract");
     }
 
     void Crouch()
@@ -95,7 +103,7 @@ public class PlayerController : MonoBehaviour
 
     void OnInteract(InputValue inputValue) 
     {
-        Debug.Log("Interact");
+        Interact();
     }
 
     void OnSwitch(InputValue inputValue)
