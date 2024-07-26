@@ -20,13 +20,6 @@ public class PlayerController : MonoBehaviour
     private PlayerMovement activePlayerMovement;
     public PlayerMovement CurrentActivePlayer => activePlayerMovement;
 
-    private void OnValidate()
-    {
-        human = GetComponentInChildren<HumanMovement>();
-        shadow = GetComponentInChildren<ShadowMovement>();
-
-    }
-
     void Awake()
     {
         human = GetComponentInChildren<HumanMovement>();
