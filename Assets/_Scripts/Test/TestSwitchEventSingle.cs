@@ -12,4 +12,3 @@ public class TestSwitchEventSingle : MonoBehaviour
         LeanTween.moveY(gameObject, 0, 5);
     }
 }
-
