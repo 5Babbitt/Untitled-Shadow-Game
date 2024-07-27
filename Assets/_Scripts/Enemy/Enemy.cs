@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     private List<Transform> patrolPoints = new();
     public EnemySense enemySense;
     StateMachine stateMachine;
-
+    public float Suspicion = 0f;
 
     [Serializable]
     public class Substates

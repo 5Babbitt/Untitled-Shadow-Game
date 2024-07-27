@@ -30,6 +30,15 @@ public class EnemyInvestigationState : EnemyBaseState
     {
         Debug.Log("Wander");
         animator.CrossFade(WalkHash, 0.1f);
+        sensor.SusOccurance += ReciecedSusEvent;
+    }
+
+    private void ReciecedSusEvent(Transform location, Room room)
+    {
+        if(sensor.eventHeardInRoom && currentSubstate.state == Enemy.Substates.Substate.CheckingPotentialPoints || currentSubstate.state == Enemy.Substates.Substate.CheckingRandomPoints && enemy.Suspicion <= 75)
+        {
+            enemy.Suspicion += 50f;
+        }
     }
 
     public override void Update()
@@ -61,7 +70,7 @@ public class EnemyInvestigationState : EnemyBaseState
 
     private void TimerStopped()
     {
-        if (currentSubstate.state == Enemy.Substates.Substate.CheckingRandomPoints)
+        if (currentSubstate.state == Enemy.Substates.Substate.CheckingRandomPoints && enemy.Suspicion >= 50f)
         {
             SetSubstate(ReturnSubstateOfType(Enemy.Substates.Substate.CheckingPotentialPoints));
         }
@@ -69,7 +78,7 @@ public class EnemyInvestigationState : EnemyBaseState
 
     public void SubstateController()
     {
-
+        
 
     }
 
