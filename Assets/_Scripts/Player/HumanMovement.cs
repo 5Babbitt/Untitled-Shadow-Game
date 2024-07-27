@@ -29,8 +29,7 @@ public class HumanMovement : PlayerMovement
 
     private void OnEnable()
     {
-        isCrouching = true;
-        Crouch(isCrouching);
+        
     }
 
     void Update()

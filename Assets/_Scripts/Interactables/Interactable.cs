@@ -5,13 +5,18 @@ using UnityEngine;
 /// </summary>
 public abstract class Interactable : MonoBehaviour
 {
+    public bool CanInteract => canInteract;
+    protected bool canInteract = true;
+    protected PlayerInteractor player;
+
     [Header("Interact Text Settings")]
     public string useText;
 
-    protected PlayerInteractor player;
-
     public virtual void OnInteract(PlayerInteractor interactingPlayer)
     {
+        if (!canInteract)
+            return;
+
         player = interactingPlayer;
         Debug.Log(interactingPlayer + " interacted with " + name);
     }

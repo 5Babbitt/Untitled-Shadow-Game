@@ -280,7 +280,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 776771403553043650}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.10806373, y: 0, z: 0, w: 0.994144}
+  m_LocalRotation: {x: 0.16754356, y: 0.000000029381061, z: -0.000000004993188, w: 0.9858647}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -710,7 +710,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2090693606477726811}
   - component: {fileID: 2828711636152596056}
-  - component: {fileID: 3570556418048446145}
   - component: {fileID: 3566644234985617567}
   - component: {fileID: 6416958981483967353}
   m_Layer: 7
@@ -765,27 +764,6 @@ MonoBehaviour:
     m_Bits: 264
   checkRadius: 0.25
   checkHeight: 0.25
---- !u!114 &3570556418048446145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1748944542515327303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d17a742caa887d0468ae0a98eee9973d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionLayers:
-    serializedVersion: 2
-    m_Bits: 2048
-  canInteract: 1
-  interactOffset: 0.5
-  interactHeight: 0
-  interactRadius: 0.5
-  currentInteractable: {fileID: 0}
-  carrySlot: {fileID: 5836192489265862799}
 --- !u!54 &3566644234985617567
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -999,7 +977,6 @@ GameObject:
   - component: {fileID: 4009576212900201067}
   - component: {fileID: 3201277532766246072}
   - component: {fileID: 7480000030541814893}
-  - component: {fileID: 1990222272937062764}
   m_Layer: 6
   m_Name: Human
   m_TagString: Untagged
@@ -1072,27 +1049,6 @@ MonoBehaviour:
   crouchHeight: 0.9
   crouchSpeedModifier: 0.5
   gravityForce: 15
---- !u!114 &1990222272937062764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2584035640407967542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d17a742caa887d0468ae0a98eee9973d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionLayers:
-    serializedVersion: 2
-    m_Bits: 2048
-  canInteract: 1
-  interactOffset: 1
-  interactHeight: 0.5
-  interactRadius: 0.9
-  currentInteractable: {fileID: 0}
-  carrySlot: {fileID: 5836192489265862799}
 --- !u!1 &2896614410350210298
 GameObject:
   m_ObjectHideFlags: 0
@@ -1562,8 +1518,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4280975578642212391}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.12371707, y: 0, z: 0, w: 0.99231756}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.1519864, y: -0.000000013641262, z: 0.0000000020976554, w: 0.98838264}
+  m_LocalPosition: {x: 0, y: 0.00000023841858, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2093,7 +2049,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 0.2, z: -2.5}
+  m_FollowOffset: {x: 0, y: 2.5, z: -5}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -2332,7 +2288,7 @@ Transform:
   m_GameObject: {fileID: 5856997520819800720}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2, z: -2.5}
+  m_LocalPosition: {x: 0, y: 2.5, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2381,7 +2337,7 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_YAxis:
-    Value: 0
+    Value: 0.5
     m_SpeedMode: 0
     m_MaxSpeed: 2
     m_AccelTime: 0.2
@@ -2805,8 +2761,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7128465676321519450}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.13930878, y: 0, z: 0, w: 0.99024904}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.13642249, y: -0.0000000017424017, z: 2.3994587e-10, w: 0.9906508}
+  m_LocalPosition: {x: 0, y: 0.00000023841858, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3081,7 +3037,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7458020635985757200}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.13566652, y: -0.6840871, z: 0.13174315, w: 0.7044595}
   m_LocalPosition: {x: 0, y: -0.000000007450581, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3341,7 +3297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 0.2, z: -2.5}
+  m_FollowOffset: {x: 0, y: 2.5, z: -5}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -3845,7 +3801,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 0.2, z: -2.5}
+  m_FollowOffset: {x: 0, y: 2.5, z: -5}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -3923,6 +3879,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4548148575373430358}
   - component: {fileID: 5959664768704429064}
+  - component: {fileID: 3522708354680347150}
   - component: {fileID: 4788046467346571074}
   m_Layer: 6
   m_Name: Player
@@ -3964,6 +3921,28 @@ MonoBehaviour:
   isShadow: 0
   human: {fileID: 7480000030541814893}
   shadow: {fileID: 2828711636152596056}
+--- !u!114 &3522708354680347150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9196972457834804603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d17a742caa887d0468ae0a98eee9973d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionLayers:
+    serializedVersion: 2
+    m_Bits: 2048
+  canInteract: 1
+  interactOffset: 1
+  interactHeight: 0.5
+  interactRadius: 0.9
+  currentInteractable: {fileID: 0}
+  humanTransform: {fileID: 4009576212900201067}
+  carrySlot: {fileID: 5836192489265862799}
 --- !u!114 &4788046467346571074
 MonoBehaviour:
   m_ObjectHideFlags: 0

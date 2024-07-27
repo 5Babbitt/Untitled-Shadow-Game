@@ -12,7 +12,7 @@ public class CarrySlot : MonoBehaviour
 
     private void Start()
     {
-        player = transform.parent.GetComponent<PlayerInteractor>();
+        player = transform.root.GetComponent<PlayerInteractor>();
     }
 
     public void Clear()
