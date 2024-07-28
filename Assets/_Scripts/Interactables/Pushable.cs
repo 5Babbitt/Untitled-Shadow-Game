@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// Pushable
 /// </summary>
-[RequireComponent(typeof(PlayerInput), typeof(BoxCollider), typeof(Rigidbody))]
+[RequireComponent(typeof(PlayerInput), typeof(Rigidbody))]
 public class Pushable : Interactable
 {
     [Header("Pushable Settings")]

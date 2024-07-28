@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5462186858350714402}
   - component: {fileID: 4480138822348477292}
   - component: {fileID: 3674366076456949284}
+  - component: {fileID: 8449764997685535289}
+  - component: {fileID: 8045511822750832249}
   m_Layer: 11
   m_Name: TestDoor
   m_TagString: Untagged
@@ -47,6 +49,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useText: 
+  onKeyItemPlaced: {fileID: 0}
+  carrySlot: {fileID: 0}
+  dimensions: {x: 1, y: 1, z: 1}
+  KeyData: {fileID: 0}
+  isLocked: 1
   door: {fileID: 560753515892952636}
   rotateAxis: {x: 0, y: 1, z: 0}
   openAngle: -90
@@ -71,8 +78,53 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1, y: 2.75, z: 0.35}
-  m_Center: {x: 1, y: 1.375, z: 0}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 1, y: 1.5, z: 0}
+--- !u!114 &8449764997685535289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7765533168930934937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 254850e6bf0c0a64db5c3c2d0655f69b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 0}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4480138822348477292}
+        m_TargetAssemblyTypeName: Door, Assembly-CSharp
+        m_MethodName: Unlock
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8045511822750832249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7765533168930934937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815a406c8a070cd4f987acfd8a5ab7c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  room: {fileID: 0}
+  type: 2
+  sense: {fileID: 0}
+  fallThreshold: -10
+  rotationThreshold: 45
 --- !u!1 &8640033215954534336
 GameObject:
   m_ObjectHideFlags: 0
@@ -103,7 +155,7 @@ Transform:
   m_GameObject: {fileID: 8640033215954534336}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.099999905}
+  m_LocalPosition: {x: 0, y: 0.1, z: -0.099999905}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -321,7 +373,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 21
+  m_VersionIndex: 30
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

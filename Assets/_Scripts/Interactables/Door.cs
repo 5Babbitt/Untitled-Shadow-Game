@@ -3,25 +3,30 @@ using UnityEngine;
 /// <summary>
 /// Door
 /// </summary>
-public class Door : Interactable
+public class Door : Placeable
 {
     [Header("Door Settings")]
+    [SerializeField] private bool isLocked;
     [SerializeField] private Transform door;
     [SerializeField] private Vector3 rotateAxis = Vector3.up;
     [SerializeField] private float openAngle;
     [SerializeField] private bool isOpen;
     [SerializeField] private float doorTime;
 
+    public bool IsLocked => isLocked;
+
     public override void Start()
     {
-        
+
     }
 
     public override void OnInteract(PlayerInteractor interactingPlayer)
     {
+
         base.OnInteract(interactingPlayer);
 
-        if (!canInteract)
+        // If cannot interact or locked, return
+        if (!canInteract || isLocked)
             return;
 
         if (isOpen)
@@ -53,6 +58,11 @@ public class Door : Interactable
         Debug.Log($"Can Interact: {canInteract}");
         isOpen = false;
         LeanTween.rotateAround(gameObject, rotateAxis, -openAngle, doorTime).setOnComplete(() => OnTweenComplete());
+    }
+
+    public void Unlock()
+    {
+        isLocked = false;
     }
 
     void OnTweenComplete()

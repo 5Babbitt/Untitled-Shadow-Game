@@ -3,14 +3,13 @@ using UnityEngine;
 
 public class Switch : Interactable
 {
-
     [Header("Switch Settings")]
     public GameEvent switchEvent;
 
-    [SerializeField] private bool singleUse = false;
+    [SerializeField] protected bool singleUse = false;
 
     public bool IsActive => isActive;
-    private bool isActive;
+    protected bool isActive;
 
     public override void OnInteract(PlayerInteractor interactingPlayer)
     {

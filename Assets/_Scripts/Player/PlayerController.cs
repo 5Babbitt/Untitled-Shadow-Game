@@ -50,6 +50,11 @@ public class PlayerController : MonoBehaviour
         BroadcastMessage("Move", moveVector.normalized);
     }
 
+    public void SwitchToHuman()
+    {
+        Switch(false);
+    }
+
     void Switch(bool value)
     {
         if (isShadow && !shadow.CanSwitch())

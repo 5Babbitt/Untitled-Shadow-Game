@@ -3,6 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Interactable
 /// </summary>
+[RequireComponent (typeof(BoxCollider))]
 public abstract class Interactable : MonoBehaviour
 {
     public bool CanInteract => canInteract;

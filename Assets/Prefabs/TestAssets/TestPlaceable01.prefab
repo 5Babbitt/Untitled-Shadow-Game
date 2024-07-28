@@ -46,9 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useText: Place
-  dimensions: {x: 1, y: 1, z: 1}
+  onKeyItemPlaced: {fileID: 11400000, guid: e260af32c82a2cb43b6229a384c5dbed, type: 2}
   carrySlot: {fileID: 0}
-  OnKeyItemPlaced: {fileID: 11400000, guid: e260af32c82a2cb43b6229a384c5dbed, type: 2}
+  dimensions: {x: 1, y: 1, z: 1}
   KeyData: {fileID: 11400000, guid: b14b7eed11e0e854e9f05467fdb48149, type: 2}
 --- !u!65 &5778634505690583119
 BoxCollider:
@@ -65,7 +65,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

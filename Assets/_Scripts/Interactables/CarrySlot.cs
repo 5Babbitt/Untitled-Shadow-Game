@@ -9,11 +9,13 @@ public class CarrySlot : MonoBehaviour
     public Carriable carryItem;
 
     public Transform carryTransform;
+    public bool IsEmpty => (carryItem == null);
 
     private void Start()
     {
         player = transform.root.GetComponent<PlayerInteractor>();
     }
+
 
     public void Clear()
     {

@@ -6,11 +6,19 @@ using UnityEngine;
 /// </summary>
 public class Placeable : Interactable
 {
-    [SerializeField] private GameEvent onKeyItemPlaced;
-    [SerializeField] private Carriable carrySlot;
-    [SerializeField] private Vector3 dimensions = Vector3.one;
+    [Header("Placeable Settings")]
+    [SerializeField] protected GameEvent onKeyItemPlaced;
+    [SerializeField] protected Carriable carrySlot;
+    [SerializeField] protected Vector3 dimensions = Vector3.one;
+    private BoxCollider placementCollider;
 
     public KeyData KeyData;
+
+    public override void Start()
+    {
+        base.Start();
+        placementCollider = GetComponent<BoxCollider>();
+    }
 
     public override void OnInteract(PlayerInteractor interactingPlayer)
     {
@@ -43,7 +51,7 @@ public class Placeable : Interactable
 
     }
 
-    private bool KeyDataMatch(Carriable carriable)
+    protected bool KeyDataMatch(Carriable carriable)
     {
         if (KeyData == carriable.KeyData)
         {
@@ -54,15 +62,15 @@ public class Placeable : Interactable
         return false;
     }
 
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position, dimensions);
+        Gizmos.DrawWireCube(transform.position + placementCollider.center, dimensions);
     }
 
-    private void OnValidate()
+    protected virtual void OnValidate()
     {
-        var collider = GetComponent<BoxCollider>();
-        collider.size = dimensions;
+        placementCollider = GetComponent<BoxCollider>();
+        placementCollider.size = dimensions;
     }
 }
