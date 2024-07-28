@@ -24,11 +24,12 @@ public abstract class Interactable : MonoBehaviour
 
     public virtual void OnFocus()
     {
-
+        HUDController.Instance.SetInteractText(useText);
     }
 
     public virtual void OnLoseFocus()
     {
+        HUDController.Instance.SetInteractText();
         player = null;
     }
 

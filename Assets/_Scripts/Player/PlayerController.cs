@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// PlayerController
 /// </summary>
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
     Camera cam;
 
@@ -18,12 +18,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private HumanMovement human;
     [SerializeField] private ShadowMovement shadow;
     [SerializeField] private PlayerInteractor interactor;
+    public PlayerInteractor Interactor => interactor;
 
     private PlayerMovement activePlayerMovement;
     public PlayerMovement CurrentActivePlayer => activePlayerMovement;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         human = GetComponentInChildren<HumanMovement>();
         shadow = GetComponentInChildren<ShadowMovement>();
         interactor = GetComponent<PlayerInteractor>();

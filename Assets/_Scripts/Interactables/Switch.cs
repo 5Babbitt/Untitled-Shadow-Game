@@ -27,6 +27,11 @@ public class Switch : Interactable
 
     public override void OnFocus()
     {
+        if (isActive && !singleUse)
+            useText = "Switch Off";
+        else if (!isActive)
+            useText = "Switch On";
+
         base.OnFocus();
     }
 

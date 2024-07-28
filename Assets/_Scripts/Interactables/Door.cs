@@ -37,6 +37,11 @@ public class Door : Placeable
 
     public override void OnFocus()
     {
+        if (isOpen)
+            useText = "close";
+        else if (!isOpen)
+            useText = "open";
+
         base.OnFocus();
     }
 
