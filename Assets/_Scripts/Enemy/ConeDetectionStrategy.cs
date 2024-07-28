@@ -43,7 +43,7 @@ using UnityEngine;
         {
             if (Physics.Raycast(detector.position, dir, out hit, detectionRadius))
             {
-                Debug.Log($"I see: {hit.transform.gameObject.name}");
+               // Debug.Log($"I see: {hit.transform.gameObject.name}");
                 if (hit.transform.tag != "Player")
                 {
                     return false; // View is obstructed

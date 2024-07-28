@@ -30,7 +30,8 @@ public class EnemyInvestigationState : EnemyBaseState
 
     public override void OnEnter()
     {
-        Debug.Log("Wander");
+        //Debug.Log("Investigation entered");
+        sensor.RoomCheckComplete = false;
         animator.CrossFade(WalkHash, 0.1f);
         sensor.SusOccurance += ReciecedSusEvent;
         if (sensor.eventHeardInRoom) 
