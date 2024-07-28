@@ -34,7 +34,10 @@ public class Room : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        other.GetComponent<EnemySense>().inRoom = false;
-        other.GetComponent<EnemySense>().currentRoom = null;
+        if (other.gameObject.tag == "Enemy" && other.GetComponent<EnemySense>() != null)
+        {
+            other.GetComponent<EnemySense>().inRoom = false;
+            other.GetComponent<EnemySense>().currentRoom = null;
+        }
     }
 }
