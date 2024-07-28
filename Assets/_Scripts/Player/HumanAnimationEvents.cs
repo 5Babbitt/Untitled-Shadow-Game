@@ -7,6 +7,6 @@ public class HumanAnimationEvents : MonoBehaviour
 {
     public void PlayFootstepSound()
     {
-        Debug.Log("Player Stepped");
+
     }
 }

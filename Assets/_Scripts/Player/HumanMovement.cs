@@ -8,6 +8,8 @@ public class HumanMovement : PlayerMovement
     CharacterController controller;
     Animator animator;
     [SerializeField] private float speedMultiplier = 1;
+    [SerializeField] private bool canMove;
+    public bool CanMove => canMove;
 
     [Header("Crouch Settings")]
     [SerializeField] private bool isCrouching;
@@ -25,11 +27,8 @@ public class HumanMovement : PlayerMovement
         base.Awake();
         animator = GetComponentInChildren<Animator>();
         controller = GetComponent<CharacterController>();
-    }
 
-    private void OnEnable()
-    {
-        
+        canMove = true;
     }
 
     void Update()
@@ -41,17 +40,23 @@ public class HumanMovement : PlayerMovement
 
     protected override void Move(Vector3 value)
     {
-        moveVector = Vector3.ProjectOnPlane(value.normalized, Vector3.up) * moveSpeed * speedMultiplier;
+        moveVector = moveSpeed * speedMultiplier * Vector3.ProjectOnPlane(value.normalized, Vector3.up);
     }
 
     protected override void HandleMove()
     {
+        if (!canMove)
+            return;
+
         controller.Move(moveVector * Time.deltaTime);
         animator.SetFloat("currentSpeed", controller.velocity.magnitude);
     }
 
     protected override void HandleRotate(Vector3 vector)
     {
+        if (!canMove)
+            return;
+
         if (vector == Vector3.zero)
             return;
 
@@ -86,5 +91,10 @@ public class HumanMovement : PlayerMovement
         speedMultiplier = isCrouching ? crouchSpeedModifier : 1f;
 
         animator.SetBool("isCrouching", isCrouching);
+    }
+
+    public void SetCanMove(bool value)
+    {
+        canMove = value;
     }
 }

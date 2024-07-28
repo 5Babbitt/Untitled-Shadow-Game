@@ -22,6 +22,9 @@ public class CarrySlot : MonoBehaviour
 
     public void Drop()
     {
+        if (carryItem == null)
+            return;
+
         carryItem.Drop(player);
     }
 }

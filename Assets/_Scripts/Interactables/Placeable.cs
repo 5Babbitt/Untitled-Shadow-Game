@@ -6,11 +6,10 @@ using UnityEngine;
 /// </summary>
 public class Placeable : Interactable
 {
+    [SerializeField] private GameEvent onKeyItemPlaced;
+    [SerializeField] private Carriable carrySlot;
     [SerializeField] private Vector3 dimensions = Vector3.one;
 
-    [SerializeField] private Carriable carrySlot;
-
-    [SerializeField] private GameEvent OnKeyItemPlaced;
     public KeyData KeyData;
 
     public override void OnInteract(PlayerInteractor interactingPlayer)
@@ -28,7 +27,7 @@ public class Placeable : Interactable
         carrySlot = interactingPlayer.GetCarriable();
         carrySlot.transform.SetParent(transform);
         carrySlot.transform.position = transform.position;
-        OnKeyItemPlaced.Raise();
+        onKeyItemPlaced.Raise();
         interactingPlayer.carrySlot.Clear();
     }
 

@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool isShadow;
     [SerializeField] private HumanMovement human;
     [SerializeField] private ShadowMovement shadow;
+    [SerializeField] private PlayerInteractor interactor;
 
     private PlayerMovement activePlayerMovement;
     public PlayerMovement CurrentActivePlayer => activePlayerMovement;
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
     {
         human = GetComponentInChildren<HumanMovement>();
         shadow = GetComponentInChildren<ShadowMovement>();
+        interactor = GetComponent<PlayerInteractor>();
     } 
     
     void Start()
@@ -55,11 +57,26 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Unable to switch to human here");
             return;
         }
+        else if (!isShadow && !human.CanMove)
+        {
+            Debug.Log("Unable to switch to shadow while pushing an object");
+
+            return;
+        }
+
 
         if (value)
+        {
             human.transform.position = shadow.transform.position;
+
+        }
         else
+        {
             shadow.transform.position = human.transform.position;
+
+            interactor.carrySlot.Drop();
+            interactor.ClearInteractable();
+        }
 
         isShadow = !value;
 

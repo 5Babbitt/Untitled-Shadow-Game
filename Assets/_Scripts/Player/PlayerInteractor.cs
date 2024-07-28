@@ -5,8 +5,8 @@ using UnityEngine;
 /// </summary>
 public class PlayerInteractor : MonoBehaviour
 {
-    private PlayerController player;
     private Camera cam;
+    public PlayerController player {  get; private set; }
 
     [Header("Interaction Settings")]
     [SerializeField] private LayerMask interactionLayers;
