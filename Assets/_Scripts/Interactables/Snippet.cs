@@ -5,6 +5,7 @@ using UnityEngine;
 /// </summary>
 public class Snippet : Interactable
 {
+    [TextArea(15, 20)]
     [SerializeField] private string loreSnippet;
 
     private bool isViewing;
