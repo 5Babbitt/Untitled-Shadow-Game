@@ -38,6 +38,9 @@ public class Snippet : Interactable
 
     public override void OnLoseFocus()
     {
+        if (HUDController.Instance != null)
+            HUDController.Instance.CloseSnippet();
+
         base.OnLoseFocus();
     }
 
