@@ -29,7 +29,9 @@ using UnityEngine.AI;
         {
        // GetAllTargets();
        
-        Debug.Log($"Chasing player at {sensor.player.position}");
+        //Debug.Log($"Chasing player at {sensor.player.position}");
+        agent.speed = 5;
+        agent.angularSpeed = 180f;
         agent.SetDestination(sensor.player.position);
         }
     }

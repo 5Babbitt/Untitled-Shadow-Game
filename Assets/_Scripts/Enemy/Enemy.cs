@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,9 +12,20 @@ public class Enemy : MonoBehaviour
     private List<Transform> patrolPoints = new();
     public EnemySense enemySense;
     StateMachine stateMachine;
+    public float Suspicion = 0f;
 
-    //   private void OnValidate() => this.ValidateRefs();
-
+    [Serializable]
+    public class Substates
+    {
+        
+        public enum Substate
+        {
+            CheckingEvent, CheckingPotentialPoints, CheckingRandomPoints
+        }
+        public Substate state;
+        public float stateTime;
+    }
+    public List<Substates> substates = new List<Substates>();
     private void Awake()
     {
         SetPatrolPoints();
@@ -28,9 +40,14 @@ public class Enemy : MonoBehaviour
         stateMachine = new StateMachine();
         var wanderState = new EnemyWanderState(this, animator, agent, patrolPoints);
         var chaseState = new EnemyChaseState(this, animator, agent, enemySense.player,enemySense);
+        var investigationState = new EnemyInvestigationState(this, animator, agent, enemySense.currentRoom, enemySense, substates);
         
         At(from:wanderState,to:chaseState,condition:new FuncPredicate(() => enemySense.CanDetectPlayer()));
         At(from: chaseState, to: wanderState, condition: new FuncPredicate(() => !enemySense.CanDetectPlayer()));
+        At(from: wanderState, to: investigationState, condition: new FuncPredicate(() => enemySense.eventHeardOutOfRoom));
+        At(from: wanderState, to: investigationState, condition: new FuncPredicate(() => enemySense.eventHeardInRoom));
+        At(from:investigationState,to: wanderState, condition: new FuncPredicate(() => enemySense.RoomCheckComplete));
+        At(from: investigationState, to: chaseState, condition: new FuncPredicate(() => enemySense.CanDetectPlayer()));
         stateMachine.SetState(wanderState);
     }
 

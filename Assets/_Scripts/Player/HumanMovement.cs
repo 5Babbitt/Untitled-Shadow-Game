@@ -8,10 +8,10 @@ public class HumanMovement : PlayerMovement
     CharacterController controller;
     Animator animator;
     [SerializeField] private float speedMultiplier = 1;
+    [SerializeField] private bool canMove;
+    public bool CanMove => canMove;
 
     [Header("Crouch Settings")]
-    [SerializeField] private GameObject walkModel;
-    [SerializeField] private GameObject crouchModel;
     [SerializeField] private bool isCrouching;
     [SerializeField] private float walkHeight;
     [SerializeField] private float crouchHeight;
@@ -25,12 +25,10 @@ public class HumanMovement : PlayerMovement
     protected override void Awake()
     {
         base.Awake();
+        animator = GetComponentInChildren<Animator>();
         controller = GetComponent<CharacterController>();
-    }
 
-    private void OnEnable()
-    {
-        Debug.Log("Switched to human");
+        canMove = true;
     }
 
     void Update()
@@ -38,21 +36,27 @@ public class HumanMovement : PlayerMovement
         HandleMove();
         HandleRotate(moveVector.normalized);
         HandleGravity();
-       // Debug.Log(this.transform.position);
     }
 
     protected override void Move(Vector3 value)
     {
-        moveVector = Vector3.ProjectOnPlane(value.normalized, Vector3.up) * moveSpeed * speedMultiplier;
+        moveVector = moveSpeed * speedMultiplier * Vector3.ProjectOnPlane(value.normalized, Vector3.up);
     }
 
     protected override void HandleMove()
     {
+        if (!canMove)
+            return;
+
         controller.Move(moveVector * Time.deltaTime);
+        animator.SetFloat("currentSpeed", controller.velocity.magnitude);
     }
 
     protected override void HandleRotate(Vector3 vector)
     {
+        if (!canMove)
+            return;
+
         if (vector == Vector3.zero)
             return;
 
@@ -71,36 +75,26 @@ public class HumanMovement : PlayerMovement
 
     void HandleCrouch()
     {
-        Debug.Log("Human Crouched");
         if (controller.height == walkHeight)
             isCrouching = true;
         else
             isCrouching = false;
 
+        Crouch(isCrouching);
+    }
+
+    void Crouch(bool value)
+    {
         controller.height = isCrouching ? crouchHeight : walkHeight;
         controller.center = new Vector3(0, controller.height / 2, 0);
 
         speedMultiplier = isCrouching ? crouchSpeedModifier : 1f;
 
-        walkModel.SetActive(!isCrouching);
-        crouchModel.SetActive(isCrouching);
+        animator.SetBool("isCrouching", isCrouching);
     }
 
-    void Crouch(bool value)
+    public void SetCanMove(bool value)
     {
-        controller.height = value ? crouchHeight : walkHeight;
-        controller.center = new Vector3(0, controller.height / 2, 0);
-
-        speedMultiplier = value ? crouchSpeedModifier : 1f;
-
-        walkModel.SetActive(!value);
-        crouchModel.SetActive(value);
-    }
-
-    public void SetIsCrouching(bool value)
-    {
-        isCrouching = value;
-
-        Crouch(isCrouching);
+        canMove = value;
     }
 }

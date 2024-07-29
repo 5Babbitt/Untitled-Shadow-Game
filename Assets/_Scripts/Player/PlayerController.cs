@@ -1,11 +1,12 @@
 using FiveBabbittGames;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
 /// PlayerController
 /// </summary>
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
     Camera cam;
 
@@ -16,13 +17,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool isShadow;
     [SerializeField] private HumanMovement human;
     [SerializeField] private ShadowMovement shadow;
+    [SerializeField] private PlayerInteractor interactor;
+    public PlayerInteractor Interactor => interactor;
 
-    private GameEvent onSound;
+    private PlayerMovement activePlayerMovement;
+    public PlayerMovement CurrentActivePlayer => activePlayerMovement;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         human = GetComponentInChildren<HumanMovement>();
         shadow = GetComponentInChildren<ShadowMovement>();
+        interactor = GetComponent<PlayerInteractor>();
     } 
     
     void Start()
@@ -46,29 +53,56 @@ public class PlayerController : MonoBehaviour
         BroadcastMessage("Move", moveVector.normalized);
     }
 
+    public void SwitchToHuman()
+    {
+        Switch(false);
+    }
+
     void Switch(bool value)
     {
         if (isShadow && !shadow.CanSwitch())
         {
             Debug.Log("Unable to switch to human here");
             return;
+        }
+        else if (!isShadow && !human.CanMove)
+        {
+            Debug.Log("Unable to switch to shadow while pushing an object");
 
+            return;
         }
 
+
         if (value)
+        {
             human.transform.position = shadow.transform.position;
+
+            interactor.ClearInteractable(); 
+            interactor.enabled = true;
+        }
         else
+        {
             shadow.transform.position = human.transform.position;
+
+            interactor.carrySlot.Drop();
+            interactor.ClearInteractable();
+            interactor.enabled = false;
+
+            HUDController.Instance.SetInteractText();
+        }
 
         isShadow = !value;
 
         human.gameObject.SetActive(!isShadow);
         shadow.gameObject.SetActive(isShadow);
+
+        activePlayerMovement = isShadow ? shadow : human;
     }
 
     void Interact()
     {
-
+        Debug.Log("Interact");
+        BroadcastMessage("HandleInteract");
     }
 
     void Crouch()
@@ -92,7 +126,7 @@ public class PlayerController : MonoBehaviour
 
     void OnInteract(InputValue inputValue) 
     {
-        Debug.Log("Interact");
+        Interact();
     }
 
     void OnSwitch(InputValue inputValue)
