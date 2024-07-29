@@ -87,8 +87,9 @@ public class PlayerController : Singleton<PlayerController>
             interactor.carrySlot.Drop();
             interactor.ClearInteractable();
             interactor.enabled = false;
-
-            HUDController.Instance.SetInteractText();
+            
+            if (HUDController.Instance != null)
+                HUDController.Instance.SetInteractText();
         }
 
         isShadow = !value;

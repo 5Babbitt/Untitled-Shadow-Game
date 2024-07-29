@@ -96,7 +96,8 @@ public class Door : Placeable
                 useText = "open";
         }
 
-        HUDController.Instance.SetInteractText(useText);
+        if (HUDController.Instance != null)
+            HUDController.Instance.SetInteractText(useText);
     }
 
     private void OnDrawGizmosSelected()

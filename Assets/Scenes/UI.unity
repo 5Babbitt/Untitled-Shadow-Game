@@ -514,7 +514,7 @@ MonoBehaviour:
   HUDCanvas: {fileID: 109553373}
   interactText: {fileID: 1663905040}
   SnippetCanvas: {fileID: 326192433}
-  snippetText: {fileID: 0}
+  snippetText: {fileID: 1299975926}
 --- !u!1 &1238812895
 GameObject:
   m_ObjectHideFlags: 0

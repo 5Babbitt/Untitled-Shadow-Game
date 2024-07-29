@@ -135,6 +135,8 @@ public class Pushable : Interactable
 
     protected override void UpdateInteractText()
     {
+        useText = "Push";
+
         base.UpdateInteractText();
     }
 }

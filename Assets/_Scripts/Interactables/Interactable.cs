@@ -11,7 +11,7 @@ public abstract class Interactable : MonoBehaviour
     protected PlayerInteractor player;
 
     [Header("Interact Text Settings")]
-    public string useText;
+    [SerializeField] protected string useText;
 
     public virtual void OnInteract(PlayerInteractor interactingPlayer)
     {
@@ -24,18 +24,21 @@ public abstract class Interactable : MonoBehaviour
 
     public virtual void OnFocus()
     {
-        HUDController.Instance.SetInteractText(useText);
+        if (HUDController.Instance != null)
+            HUDController.Instance.SetInteractText(useText);
     }
 
     public virtual void OnLoseFocus()
     {
-        HUDController.Instance.SetInteractText();
+        if (HUDController.Instance != null)
+            HUDController.Instance.SetInteractText();
         player = null;
     }
 
     protected virtual void UpdateInteractText()
     {
-        HUDController.Instance.SetInteractText(useText);
+        if (HUDController.Instance != null)
+            HUDController.Instance.SetInteractText(useText);
     }
 
     public virtual void Start()
