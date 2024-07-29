@@ -9,11 +9,13 @@ public class CarrySlot : MonoBehaviour
     public Carriable carryItem;
 
     public Transform carryTransform;
+    public bool IsEmpty => (carryItem == null);
 
     private void Start()
     {
-        player = transform.parent.GetComponent<PlayerInteractor>();
+        player = transform.root.GetComponent<PlayerInteractor>();
     }
+
 
     public void Clear()
     {
@@ -22,6 +24,9 @@ public class CarrySlot : MonoBehaviour
 
     public void Drop()
     {
+        if (carryItem == null)
+            return;
+
         carryItem.Drop(player);
     }
 }

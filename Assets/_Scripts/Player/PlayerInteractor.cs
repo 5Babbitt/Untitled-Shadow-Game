@@ -5,8 +5,8 @@ using UnityEngine;
 /// </summary>
 public class PlayerInteractor : MonoBehaviour
 {
-    private PlayerController player;
     private Camera cam;
+    public PlayerController player {  get; private set; }
 
     [Header("Interaction Settings")]
     [SerializeField] private LayerMask interactionLayers;
@@ -19,20 +19,23 @@ public class PlayerInteractor : MonoBehaviour
     private Vector3 forwardVector;
     private Vector3 upVector;
 
+    public Transform humanTransform;
     public CarrySlot carrySlot;
 
     void Awake()
     {
-        player = transform.root.GetComponent<PlayerController>();
+        player = GetComponent<PlayerController>();
+        humanTransform = GetComponentInChildren<HumanMovement>().transform;
         cam = Camera.main;
+
     }
 
     private void Update()
     {
-        forwardVector = (Application.isPlaying ? Vector3.ProjectOnPlane(cam.transform.forward, transform.up).normalized : transform.forward) * interactOffset;
-        upVector = transform.up * interactHeight;
+        forwardVector = (Application.isPlaying ? Vector3.ProjectOnPlane(cam.transform.forward, humanTransform.up).normalized : humanTransform.forward) * interactOffset;
+        upVector = humanTransform.up * interactHeight;
 
-        var interactables = Physics.OverlapSphere(transform.position + forwardVector + upVector, interactRadius, interactionLayers);
+        var interactables = Physics.OverlapSphere(humanTransform.position + forwardVector + upVector, interactRadius, interactionLayers);
 
         if (interactables.Length > 0)
         {
@@ -102,10 +105,10 @@ public class PlayerInteractor : MonoBehaviour
 
         if (!Application.isPlaying )
         {
-            forwardVector = (Application.isPlaying ? Vector3.ProjectOnPlane(cam.transform.forward, transform.up).normalized : transform.forward) * interactOffset;
-            upVector = transform.up * interactHeight;
+            forwardVector = (Application.isPlaying ? Vector3.ProjectOnPlane(cam.transform.forward, humanTransform.up).normalized : humanTransform.forward) * interactOffset;
+            upVector = humanTransform.up * interactHeight;
         }
 
-        Gizmos.DrawWireSphere(transform.position + forwardVector + upVector, interactRadius);
+        Gizmos.DrawWireSphere(humanTransform.position + forwardVector + upVector, interactRadius);
     }
 }

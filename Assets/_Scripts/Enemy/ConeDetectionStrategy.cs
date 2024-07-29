@@ -33,19 +33,25 @@ using UnityEngine;
         RaycastHit hit;
         Vector3[] raycastDirections = {
         directionToPlayer.normalized,
-        (directionToPlayer + Vector3.up * 0.5f).normalized,
-        (directionToPlayer - Vector3.up * 0.5f).normalized,
-        (directionToPlayer + Vector3.right * 0.5f).normalized,
-        (directionToPlayer - Vector3.right * 0.5f).normalized
+        (directionToPlayer + Vector3.up * 1f).normalized,
+        (directionToPlayer - Vector3.up * 1f).normalized,
+        (directionToPlayer + Vector3.right * 1f).normalized,
+        (directionToPlayer - Vector3.right * 1f).normalized
     };
 
         foreach (var dir in raycastDirections)
         {
             if (Physics.Raycast(detector.position, dir, out hit, detectionRadius))
             {
-                if (hit.transform != player)
+               // Debug.Log($"I see: {hit.transform.gameObject.name}");
+                if (hit.transform.tag != "Player")
                 {
                     return false; // View is obstructed
+                }
+                else
+                {
+                    timer.Start();
+                    return true;
                 }
             }
         }

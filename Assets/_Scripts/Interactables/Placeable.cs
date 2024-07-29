@@ -6,12 +6,19 @@ using UnityEngine;
 /// </summary>
 public class Placeable : Interactable
 {
-    [SerializeField] private Vector3 dimensions = Vector3.one;
+    [Header("Placeable Settings")]
+    [SerializeField] protected GameEvent onKeyItemPlaced;
+    [SerializeField] protected Carriable carrySlot;
+    [SerializeField] protected Vector3 dimensions = Vector3.one;
+    private BoxCollider placementCollider;
 
-    [SerializeField] private Carriable carrySlot;
-
-    [SerializeField] private GameEvent OnKeyItemPlaced;
     public KeyData KeyData;
+
+    public override void Start()
+    {
+        base.Start();
+        placementCollider = GetComponent<BoxCollider>();
+    }
 
     public override void OnInteract(PlayerInteractor interactingPlayer)
     {
@@ -28,12 +35,15 @@ public class Placeable : Interactable
         carrySlot = interactingPlayer.GetCarriable();
         carrySlot.transform.SetParent(transform);
         carrySlot.transform.position = transform.position;
-        OnKeyItemPlaced.Raise();
+        onKeyItemPlaced.Raise();
         interactingPlayer.carrySlot.Clear();
+        UpdateInteractText();
     }
 
     public override void OnFocus()
     {
+        UpdateInteractText();
+
         base.OnFocus();
 
     }
@@ -44,7 +54,7 @@ public class Placeable : Interactable
 
     }
 
-    private bool KeyDataMatch(Carriable carriable)
+    protected bool KeyDataMatch(Carriable carriable)
     {
         if (KeyData == carriable.KeyData)
         {
@@ -55,15 +65,32 @@ public class Placeable : Interactable
         return false;
     }
 
-    private void OnDrawGizmos()
+    protected virtual void OnValidate()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position, dimensions);
+        placementCollider = GetComponent<BoxCollider>();
+        placementCollider.size = dimensions;
     }
 
-    private void OnValidate()
+    protected override void UpdateInteractText()
     {
-        var collider = GetComponent<BoxCollider>();
-        collider.size = dimensions;
+        if (carrySlot != null)
+        {
+            useText = "";
+            base.UpdateInteractText();
+            return;
+        }
+        
+        Carriable carriable = PlayerController.Instance.Interactor.GetCarriable();
+
+        if (PlayerController.Instance.Interactor.GetCarriable() == null || !KeyDataMatch(carriable))
+        {
+            useText = "Wrong Key Item";
+        }
+        else
+        {
+            useText = "Place Item";
+        }
+
+        base.UpdateInteractText();
     }
 }

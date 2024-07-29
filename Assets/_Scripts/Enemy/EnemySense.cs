@@ -14,45 +14,61 @@ public class EnemySense : MonoBehaviour
     IDetectionStrategy detectionStrategy;
     public Room currentRoom;
     public bool inRoom = false;
-    public event Action<Transform,Room> SusOccurance;
+    public event Action<Transform, Room> SusOccurance;
     public float EventDetectionRange = 100f;
     public bool eventHeardOutOfRoom = false;
     public bool eventHeardInRoom = false;
+    public bool RoomCheckComplete = false;
+
     private void Start()
     {
         detectionTimer = new CountdownTimer(detectCooldown);
         playerController = FindAnyObjectByType<PlayerController>();
-        
+
         detectionStrategy = new ConeDetectionStrategy(detectionAngle, detectionRadius, innerDetectionRadius);
         SusOccurance += OnTransformReceived;
     }
 
-    private void OnTransformReceived(Transform eventTransform,Room detectedRoom)
+    private void OnDestroy()
+    {
+        SusOccurance -= OnTransformReceived;
+    }
+
+    private void OnTransformReceived(Transform eventTransform, Room detectedRoom)
     {
         var distanceToTarget = Vector3.Distance(transform.position, eventTransform.position);
 
         // If the target is within the detection radius, start the timer
         if (distanceToTarget < EventDetectionRange)
         {
-            if(currentRoom != detectedRoom)
+            if (currentRoom != detectedRoom || currentRoom == null)
             {
+                currentRoom = detectedRoom;
                 eventHeardOutOfRoom = true;
             }
             else
             {
+                currentRoom = detectedRoom;
                 eventHeardInRoom = true;
             }
-            
         }
+    }
+
+    public void ResetBools()
+    {
+        eventHeardInRoom = false;
+        eventHeardOutOfRoom = false;
     }
 
     public void Update()
     {
         detectionTimer.Tick(Time.deltaTime);
         player = playerController.CurrentActivePlayer.transform;
-       // Debug.Log($"According to sense, player is {player.position}");
-    }  
-
+    }
+    public void InvokeSusOccurrence(Transform eventTransform, Room detectedRoom)
+    {
+        SusOccurance?.Invoke(eventTransform, detectedRoom);
+    }
     public bool CanDetectPlayer()
     {
         return detectionTimer.IsRunning || detectionStrategy.Execute(player, detector: transform, detectionTimer);
@@ -76,6 +92,26 @@ public class EnemySense : MonoBehaviour
 
         Gizmos.DrawLine(transform.position, transform.position + left);
         Gizmos.DrawLine(transform.position, transform.position + right);
-        Gizmos.DrawLine(transform.position + left, transform.position + right);
+
+        int rayCount = 10;
+        for (int i = 0; i <= rayCount; i++)
+        {
+            float angle = -detectionAngle / 2 + i * (detectionAngle / rayCount);
+            Vector3 rayDirection = Quaternion.Euler(0, angle, 0) * transform.forward;
+            Ray ray = new Ray(transform.position, rayDirection);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, detectionRadius))
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawLine(ray.origin, hit.point);
+                Gizmos.DrawSphere(hit.point, 0.2f);
+            }
+            else
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawRay(transform.position, rayDirection * detectionRadius);
+            }
+        }
     }
 }
