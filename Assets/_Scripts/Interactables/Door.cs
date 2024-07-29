@@ -33,16 +33,13 @@ public class Door : Placeable
             Close();
         else
             Open();
+
+        UpdateInteractText();
     }
 
     public override void OnFocus()
     {
-        if (isOpen)
-            useText = "close";
-        else if (!isOpen)
-            useText = "open";
-
-        base.OnFocus();
+        UpdateInteractText();
     }
 
     public override void OnLoseFocus()
@@ -74,6 +71,32 @@ public class Door : Placeable
     {
         canInteract = true;
         Debug.Log($"Can Interact: {canInteract}");
+    }
+
+    protected override void UpdateInteractText()
+    {
+        if (isLocked)
+        {
+            Carriable carriable = PlayerController.Instance.Interactor.GetCarriable();
+
+            if (PlayerController.Instance.Interactor.GetCarriable() == null || !KeyDataMatch(carriable))
+            {
+                useText = "Wrong Key";
+            }
+            else
+            {
+                useText = "Insert Key";
+            }
+        }
+        else
+        {
+            if (isOpen)
+                useText = "close";
+            else if (!isOpen)
+                useText = "open";
+        }
+
+        HUDController.Instance.SetInteractText(useText);
     }
 
     private void OnDrawGizmosSelected()

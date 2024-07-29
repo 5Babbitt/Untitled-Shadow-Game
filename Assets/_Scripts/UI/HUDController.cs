@@ -7,7 +7,13 @@ using TMPro;
 /// </summary>
 public class HUDController : Singleton<HUDController>
 {
+    [Header("HUD Settings")]
+    [SerializeField] private Canvas HUDCanvas;
     [SerializeField] private TMP_Text interactText;
+
+    [Header("Snippet Settings")]
+    [SerializeField] private Canvas SnippetCanvas;
+    [SerializeField] private TMP_Text snippetText;
     
     protected override void Awake()
     {
@@ -17,7 +23,8 @@ public class HUDController : Singleton<HUDController>
 
     private void Start()
     {
-        
+        CloseSnippet();
+        SetInteractText();
     }
 
     /// <summary>
@@ -34,5 +41,21 @@ public class HUDController : Singleton<HUDController>
     public void SetInteractText()
     {
         interactText.text = null;
+    }
+
+    public void ViewSnippet(string text)
+    {
+        SnippetCanvas.gameObject.SetActive(true);
+        HUDCanvas.gameObject.SetActive(false);
+
+        snippetText.text = text;
+    }
+
+    public void CloseSnippet()
+    {
+        SnippetCanvas.gameObject.SetActive(false);
+        HUDCanvas.gameObject.SetActive(true);
+
+        snippetText.text = null;
     }
 }

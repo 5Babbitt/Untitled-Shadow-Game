@@ -33,6 +33,11 @@ public abstract class Interactable : MonoBehaviour
         player = null;
     }
 
+    protected virtual void UpdateInteractText()
+    {
+        HUDController.Instance.SetInteractText(useText);
+    }
+
     public virtual void Start()
     {
         gameObject.layer = 11;

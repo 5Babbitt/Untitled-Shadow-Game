@@ -18,9 +18,9 @@ public class MainMenuController : MonoBehaviour
         quitButton.onClick.AddListener(OnQuitButtonPressed);
     }
 
-    public void OnPlayButtonPressed()
+    public async void OnPlayButtonPressed()
     {
-        SceneLoader.Instance.LoadSceneGroup(1, true);
+        await SceneLoader.Instance.LoadSceneGroup(1, true);
     }
 
     public void OnCreditsButtonPressed() 

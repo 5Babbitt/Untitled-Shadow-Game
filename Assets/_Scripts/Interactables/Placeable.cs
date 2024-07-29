@@ -37,10 +37,13 @@ public class Placeable : Interactable
         carrySlot.transform.position = transform.position;
         onKeyItemPlaced.Raise();
         interactingPlayer.carrySlot.Clear();
+        UpdateInteractText();
     }
 
     public override void OnFocus()
     {
+        UpdateInteractText();
+
         base.OnFocus();
 
     }
@@ -72,5 +75,28 @@ public class Placeable : Interactable
     {
         placementCollider = GetComponent<BoxCollider>();
         placementCollider.size = dimensions;
+    }
+
+    protected override void UpdateInteractText()
+    {
+        if (carrySlot != null)
+        {
+            useText = "";
+            base.UpdateInteractText();
+            return;
+        }
+        
+        Carriable carriable = PlayerController.Instance.Interactor.GetCarriable();
+
+        if (PlayerController.Instance.Interactor.GetCarriable() == null || !KeyDataMatch(carriable))
+        {
+            useText = "Wrong Key Item";
+        }
+        else
+        {
+            useText = "Place Item";
+        }
+
+        base.UpdateInteractText();
     }
 }

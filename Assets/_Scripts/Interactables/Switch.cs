@@ -23,14 +23,13 @@ public class Switch : Interactable
 
         if (singleUse)
             canInteract = false;
+
+        UpdateInteractText();
     }
 
     public override void OnFocus()
     {
-        if (isActive && !singleUse)
-            useText = "Switch Off";
-        else if (!isActive)
-            useText = "Switch On";
+        UpdateInteractText();
 
         base.OnFocus();
     }
@@ -38,5 +37,18 @@ public class Switch : Interactable
     public override void OnLoseFocus()
     {
         base.OnLoseFocus();
+    }
+
+    protected override void UpdateInteractText()
+    {
+        if (isActive && !singleUse)
+            useText = "Switch Off";
+        else if (!isActive)
+            useText = "Switch On";
+
+        if (isActive && singleUse)
+            useText = "";
+
+        base.UpdateInteractText();
     }
 }

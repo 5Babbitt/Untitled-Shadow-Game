@@ -52,8 +52,9 @@ public class Pushable : Interactable
 
             human = (HumanMovement)interactingPlayer.player.CurrentActivePlayer;
 
-            human.transform.position = SnapPlayerPosition(human.transform);
             human.SetCanMove(false);
+            human.transform.position = SnapPlayerPosition(human.transform);
+
             interactingPlayer.transform.SetParent(pushObject);
 
             rb.isKinematic = false;
@@ -130,5 +131,10 @@ public class Pushable : Interactable
         Gizmos.DrawSphere(pushObject.position - (pushObject.forward * objectBounds.z), 0.2f);
         Gizmos.DrawSphere(pushObject.position + (pushObject.right * objectBounds.x), 0.2f);
         Gizmos.DrawSphere(pushObject.position - (pushObject.right * objectBounds.x), 0.2f);
-    }   
+    }
+
+    protected override void UpdateInteractText()
+    {
+        base.UpdateInteractText();
+    }
 }

@@ -77,6 +77,8 @@ public class PlayerController : Singleton<PlayerController>
         {
             human.transform.position = shadow.transform.position;
 
+            interactor.ClearInteractable(); 
+            interactor.enabled = true;
         }
         else
         {
@@ -84,6 +86,9 @@ public class PlayerController : Singleton<PlayerController>
 
             interactor.carrySlot.Drop();
             interactor.ClearInteractable();
+            interactor.enabled = false;
+
+            HUDController.Instance.SetInteractText();
         }
 
         isShadow = !value;

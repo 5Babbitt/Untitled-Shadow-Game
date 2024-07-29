@@ -31,10 +31,14 @@ public class Carriable : Interactable
         {
             PickUp(interactingPlayer);
         }
+
+        UpdateInteractText();
     }
 
     public override void OnFocus()
     {
+        UpdateInteractText();
+
         base.OnFocus();
 
     }
@@ -62,5 +66,10 @@ public class Carriable : Interactable
         GetComponent<Rigidbody>().isKinematic = false;
         transform.SetParent(null);
         interactingPlayer.SetCarriable(null);
+    }
+
+    protected override void UpdateInteractText()
+    {
+        base.UpdateInteractText();
     }
 }
