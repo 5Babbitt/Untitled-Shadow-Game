@@ -65,12 +65,6 @@ public class Placeable : Interactable
         return false;
     }
 
-    protected virtual void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position + placementCollider.center, dimensions);
-    }
-
     protected virtual void OnValidate()
     {
         placementCollider = GetComponent<BoxCollider>();
