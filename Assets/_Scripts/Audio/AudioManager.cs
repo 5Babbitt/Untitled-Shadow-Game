@@ -20,13 +20,27 @@ public class AudioManager : Singleton<AudioManager>
 
     public void PlayMusic(AudioClip music, bool setLoop = false)
     {
-        musicSource.PlayOneShot(music);
+        musicSource.Stop();
+        musicSource.clip = music;
+        musicSource.Play();
         musicSource.loop = setLoop;
     }
 
     public void PlayAmbience(AudioClip ambience, bool setLoop = false)
     {
-        ambientSource.PlayOneShot(ambience);
+        ambientSource.Stop();
+        ambientSource.clip = ambience;
+        ambientSource.Play();
         ambientSource.loop = setLoop;
+    }
+
+    public void PlayMusicStinger(AudioClip stinger)
+    {
+        musicSource.PlayOneShot(stinger);
+    }
+
+    public void PlayAmbientStinger(AudioClip stinger)
+    {
+        ambientSource.PlayOneShot(stinger);
     }
 }

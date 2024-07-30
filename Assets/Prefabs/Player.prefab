@@ -714,7 +714,7 @@ GameObject:
   - component: {fileID: 6416958981483967353}
   m_Layer: 7
   m_Name: Shadow
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -979,7 +979,7 @@ GameObject:
   - component: {fileID: 7480000030541814893}
   m_Layer: 6
   m_Name: Human
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1228,7 +1228,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3775b78c04e5bd34c95ca6762c0a35cb, type: 2}
+  - {fileID: 2100000, guid: 9a096a1bd1439824da53dda795484960, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1751,7 +1751,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b70c997b8abc95e4990fcc2c0c153998, type: 2}
+  - {fileID: 2100000, guid: 9a096a1bd1439824da53dda795484960, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2432,7 +2432,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CollideAgainst:
     serializedVersion: 2
-    m_Bits: 521
+    m_Bits: 265
   m_IgnoreTag: 
   m_TransparentLayers:
     serializedVersion: 2
@@ -3243,7 +3243,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 57b5852d2cadba54a90ef3ecfbaad75a, type: 2}
+  - {fileID: 2100000, guid: 9a096a1bd1439824da53dda795484960, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3579,7 +3579,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e3ba5c9bbede10442b142e051461ee59, type: 2}
+  - {fileID: 2100000, guid: 9a096a1bd1439824da53dda795484960, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3792,7 +3792,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CollideAgainst:
     serializedVersion: 2
-    m_Bits: 9
+    m_Bits: 265
   m_IgnoreTag: 
   m_TransparentLayers:
     serializedVersion: 2
