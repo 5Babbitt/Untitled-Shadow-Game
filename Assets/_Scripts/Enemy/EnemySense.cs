@@ -74,7 +74,7 @@ public class EnemySense : MonoBehaviour
     {
         detectionTimer.Tick(Time.deltaTime);
         player = playerController.CurrentActivePlayer.transform;
-        PlayerIsShadow = playerController.isPlayerShadow();
+        PlayerIsShadow = playerController.CurrentActivePlayer is ShadowMovement;
 
         // Switch detection strategies based on PlayerIsShadow
         if (CanDetectPlayer())

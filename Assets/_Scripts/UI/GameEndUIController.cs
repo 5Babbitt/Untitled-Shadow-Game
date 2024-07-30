@@ -1,3 +1,4 @@
+using FiveBabbittGames;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,19 +8,18 @@ using UnityEngine.UI;
 public class GameEndUIController : MonoBehaviour
 {
     public Button menuButton;
-    
-    void Awake()
+
+    public Canvas gameOver;
+    public Canvas escaped;
+
+    private void Awake()
     {
-        
-    } 
-    
-    void Start()
-    {
-        
+        menuButton.onClick.AddListener(() => SceneLoader.Instance.LoadSceneGroup((int)ESceneGroupIndex.Main_Menu, true));
     }
 
-    void Update()
+    private void OnEnable()
     {
-        
+        gameOver.gameObject.SetActive(GameManager.Instance.IsGameOver);
+        escaped.gameObject.SetActive(!GameManager.Instance.IsGameOver);
     }
 }

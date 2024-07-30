@@ -1,19 +1,21 @@
 using UnityEngine;
 using FiveBabbittGames;
 using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.Audio;
 
 /// <summary>
 /// AudioManager
 /// </summary>
 public class AudioManager : Singleton<AudioManager>
 {
+    [SerializeField] private AudioMixer audioMixer;
+
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource ambientSource;
     
     protected override void Awake()
     {
         base.Awake();
-
     }
 
     public void PlayMusic(AudioClip music, bool setLoop = false)

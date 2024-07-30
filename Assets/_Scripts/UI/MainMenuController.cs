@@ -20,7 +20,7 @@ public class MainMenuController : MonoBehaviour
 
     public async void OnPlayButtonPressed()
     {
-        await SceneLoader.Instance.LoadSceneGroup(1, true);
+        await SceneLoader.Instance.LoadSceneGroup((int)ESceneGroupIndex.Gameplay, true);
     }
 
     public void OnCreditsButtonPressed() 

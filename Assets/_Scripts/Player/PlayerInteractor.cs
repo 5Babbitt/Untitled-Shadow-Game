@@ -77,6 +77,9 @@ public class PlayerInteractor : MonoBehaviour
 
     void HandleInteract()
     {
+        if (!canInteract) 
+            return;
+
         if (currentInteractable == null)
         {
             if (carrySlot.carryItem != null)
