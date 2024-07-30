@@ -12,14 +12,16 @@ public class GameEndUIController : MonoBehaviour
     public Canvas gameOver;
     public Canvas escaped;
 
-    private void Awake()
-    {
-        menuButton.onClick.AddListener(() => SceneLoader.Instance.LoadSceneGroup((int)ESceneGroupIndex.Main_Menu, true));
-    }
-
     private void OnEnable()
     {
+        menuButton.onClick.AddListener(() => SceneLoader.Instance.LoadSceneGroup((int)ESceneGroupIndex.Main_Menu, true));
+
         gameOver.gameObject.SetActive(GameManager.Instance.IsGameOver);
         escaped.gameObject.SetActive(!GameManager.Instance.IsGameOver);
+    }
+
+    private void OnDisable()
+    {
+        menuButton.onClick.RemoveListener(() => SceneLoader.Instance.LoadSceneGroup((int)ESceneGroupIndex.Main_Menu, true));
     }
 }

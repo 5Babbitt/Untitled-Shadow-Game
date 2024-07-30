@@ -13,6 +13,11 @@ public class CreditsController : MonoBehaviour
         backButton.onClick.AddListener(OnBackButtonPressed);
     }
 
+    private void OnDisable()
+    {
+        backButton.onClick.RemoveListener(OnBackButtonPressed);
+    }
+
     public void OnBackButtonPressed()
     {
         transform.root.GetComponent<MenuScreenHandler>().OpenMenuScreen();
