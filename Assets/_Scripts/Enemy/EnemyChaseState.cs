@@ -21,7 +21,8 @@ using UnityEngine.AI;
         public override void OnEnter()
         {
             Debug.Log("Chase");
-            enemy.OnSearchCooldown = true;
+        //enemy.OnSearchCooldown = true;
+        AudioManager.Instance.PlayMusic(enemy.chaseMusic, true);
             animator.CrossFade(RunHash, 0.1f);
         }
 

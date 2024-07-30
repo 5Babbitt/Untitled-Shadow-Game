@@ -30,6 +30,7 @@ public class EnemyWanderState : EnemyBaseState
     public override void OnEnter()
     {
         Debug.Log("Entered wander state");
+        AudioManager.Instance.musicSource.Stop();
         animator.CrossFade(WalkHash, 0.1f);
     }
 

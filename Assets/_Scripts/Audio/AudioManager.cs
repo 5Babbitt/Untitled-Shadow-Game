@@ -10,7 +10,7 @@ public class AudioManager : Singleton<AudioManager>
 {
     [SerializeField] private AudioMixer audioMixer;
 
-    [SerializeField] private AudioSource musicSource;
+    [SerializeField] public AudioSource musicSource;
     [SerializeField] private AudioSource ambientSource;
     
     protected override void Awake()

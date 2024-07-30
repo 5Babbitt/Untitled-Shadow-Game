@@ -6,16 +6,12 @@ public class FlashlightDetectionStrategy : IDetectionStrategy
     readonly float detectionRadius;
     readonly Transform flashlightTransform;
     readonly Light flashlight;
-    readonly LayerMask detectionLayerMask;
-    readonly LayerMask obstructionLayerMasks;
 
-    public FlashlightDetectionStrategy(float detectionRadius, Transform flashlightTransform, LayerMask detectionLayerMask, LayerMask obstructionLayerMasks)
+    public FlashlightDetectionStrategy(float detectionRadius, Transform flashlightTransform)
     {
         this.detectionRadius = detectionRadius;
         this.flashlightTransform = flashlightTransform;
         this.flashlight = flashlightTransform.GetComponent<Light>();
-        this.detectionLayerMask = detectionLayerMask;
-        this.obstructionLayerMasks = obstructionLayerMasks;
     }
 
     public bool Execute(Transform player, Transform detector, CountdownTimer timer)
@@ -28,16 +24,12 @@ public class FlashlightDetectionStrategy : IDetectionStrategy
             return false;
 
         RaycastHit hit;
-        if (Physics.SphereCast(flashlightTransform.position, flashlight.spotAngle / 2, flashlightTransform.forward, out hit, detectionRadius, detectionLayerMask | obstructionLayerMasks))
+        if (Physics.SphereCast(flashlightTransform.position, flashlight.spotAngle / 2, flashlightTransform.forward, out hit, detectionRadius))
         {
-            if (((1 << hit.transform.gameObject.layer) & detectionLayerMask) != 0)
+            if (hit.transform.CompareTag("Player"))
             {
                 timer.Start();
                 return true; // Player detected
-            }
-            else if (((1 << hit.transform.gameObject.layer) & obstructionLayerMasks) != 0)
-            {
-                return false; // View is obstructed
             }
         }
 
