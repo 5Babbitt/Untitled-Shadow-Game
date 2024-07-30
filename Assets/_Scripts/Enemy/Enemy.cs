@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour
     public EnemySense enemySense;
     StateMachine stateMachine;
     public float Suspicion = 0f;
+    public GameObject enemyFlashlight;
+    public bool OnSearchCooldown;
 
     [Serializable]
     public class Substates
@@ -43,7 +45,7 @@ public class Enemy : MonoBehaviour
         var investigationState = new EnemyInvestigationState(this, animator, agent, enemySense.currentRoom, enemySense, substates);
         
         At(from:wanderState,to:chaseState,condition:new FuncPredicate(() => enemySense.CanDetectPlayer()));
-        At(from: chaseState, to: wanderState, condition: new FuncPredicate(() => !enemySense.CanDetectPlayer()));
+        At(from: chaseState, to: wanderState, condition: new FuncPredicate(() => !enemySense.CanDetectPlayer() && !OnSearchCooldown));
         At(from: wanderState, to: investigationState, condition: new FuncPredicate(() => enemySense.eventHeardOutOfRoom));
         At(from: wanderState, to: investigationState, condition: new FuncPredicate(() => enemySense.eventHeardInRoom));
         At(from:investigationState,to: wanderState, condition: new FuncPredicate(() => enemySense.RoomCheckComplete));

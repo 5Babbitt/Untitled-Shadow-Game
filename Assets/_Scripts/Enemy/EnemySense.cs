@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class EnemySense : MonoBehaviour
 {
-    [SerializeField] float detectionAngle = 60f;
+    [SerializeField] public float detectionAngle = 60f;
     [SerializeField] float detectionRadius = 10f;
     [SerializeField] float innerDetectionRadius = 5f;
     [SerializeField] float detectCooldown = 1f;
     public Transform player;
     public CountdownTimer detectionTimer;
     private PlayerController playerController;
-    IDetectionStrategy detectionStrategy;
+    IDetectionStrategy coneDetectionStrategy;
+    IDetectionStrategy flashlightDetectionStrategy;
+    IDetectionStrategy currentDetectionStrategy;
     public Room currentRoom;
     public bool inRoom = false;
     public event Action<Transform, Room> SusOccurance;
@@ -19,13 +21,21 @@ public class EnemySense : MonoBehaviour
     public bool eventHeardOutOfRoom = false;
     public bool eventHeardInRoom = false;
     public bool RoomCheckComplete = false;
+    public LayerMask humanMask;
+    public LayerMask shadowMask;
+    public LayerMask obbstructionMasks;
+    [HideInInspector] public bool PlayerIsShadow;
+    public Light enemyFlashlight;
 
     private void Start()
     {
         detectionTimer = new CountdownTimer(detectCooldown);
         playerController = FindAnyObjectByType<PlayerController>();
 
-        detectionStrategy = new ConeDetectionStrategy(detectionAngle, detectionRadius, innerDetectionRadius);
+        coneDetectionStrategy = new ConeDetectionStrategy(detectionAngle, detectionRadius, innerDetectionRadius);
+        flashlightDetectionStrategy = new FlashlightDetectionStrategy(detectionRadius, enemyFlashlight.transform,shadowMask, obstructionLayerMasks: obbstructionMasks);
+        currentDetectionStrategy = coneDetectionStrategy; // Start with cone detection
+
         SusOccurance += OnTransformReceived;
     }
 
@@ -64,54 +74,53 @@ public class EnemySense : MonoBehaviour
     {
         detectionTimer.Tick(Time.deltaTime);
         player = playerController.CurrentActivePlayer.transform;
+        PlayerIsShadow = playerController.isPlayerShadow();
+
+        // Switch detection strategies based on PlayerIsShadow
+        if (CanDetectPlayer())
+        {
+            currentDetectionStrategy = PlayerIsShadow ? flashlightDetectionStrategy : coneDetectionStrategy;
+        }
+        else
+        {
+            currentDetectionStrategy = coneDetectionStrategy;
+        }
     }
+
     public void InvokeSusOccurrence(Transform eventTransform, Room detectedRoom)
     {
         SusOccurance?.Invoke(eventTransform, detectedRoom);
     }
+
     public bool CanDetectPlayer()
     {
-        return detectionTimer.IsRunning || detectionStrategy.Execute(player, detector: transform, detectionTimer);
+        Debug.Log($"current detection strategy: {currentDetectionStrategy}");
+        return detectionTimer.IsRunning || currentDetectionStrategy.Execute(player, detector: transform, detectionTimer);
     }
 
-    public void SetDetectionStrategy(IDetectionStrategy detectionStrategy) => this.detectionStrategy = detectionStrategy;
+    public void SetDetectionStrategy(IDetectionStrategy detectionStrategy) => this.currentDetectionStrategy = detectionStrategy;
 
     // Add gizmos to visualize detection area
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, innerDetectionRadius);
-
-        Gizmos.color = Color.green;
-        Vector3 forward = transform.forward * detectionRadius;
-        Vector3 left = Quaternion.Euler(0, -detectionAngle / 2, 0) * forward;
-        Vector3 right = Quaternion.Euler(0, detectionAngle / 2, 0) * forward;
-
-        Gizmos.DrawLine(transform.position, transform.position + left);
-        Gizmos.DrawLine(transform.position, transform.position + right);
-
-        int rayCount = 10;
-        for (int i = 0; i <= rayCount; i++)
+        if (PlayerIsShadow)
         {
-            float angle = -detectionAngle / 2 + i * (detectionAngle / rayCount);
-            Vector3 rayDirection = Quaternion.Euler(0, angle, 0) * transform.forward;
-            Ray ray = new Ray(transform.position, rayDirection);
-            RaycastHit hit;
+            // Visualize spherecasting for flashlight detection
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(enemyFlashlight.transform.position, detectionRadius);
 
-            if (Physics.Raycast(ray, out hit, detectionRadius))
+            Vector3 forward = enemyFlashlight.transform.forward * detectionRadius;
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(enemyFlashlight.transform.position, forward);
+
+            RaycastHit hit;
+            if (Physics.SphereCast(enemyFlashlight.transform.position, enemyFlashlight.spotAngle / 2, enemyFlashlight.transform.forward, out hit, detectionRadius))
             {
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawLine(ray.origin, hit.point);
+                Gizmos.DrawLine(enemyFlashlight.transform.position, hit.point);
                 Gizmos.DrawSphere(hit.point, 0.2f);
             }
-            else
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawRay(transform.position, rayDirection * detectionRadius);
-            }
         }
+        
     }
 }

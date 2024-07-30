@@ -21,7 +21,7 @@ using UnityEngine.AI;
         public override void OnEnter()
         {
             Debug.Log("Chase");
-            
+            enemy.OnSearchCooldown = true;
             animator.CrossFade(RunHash, 0.1f);
         }
 
