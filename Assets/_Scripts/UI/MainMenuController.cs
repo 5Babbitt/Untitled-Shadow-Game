@@ -18,9 +18,16 @@ public class MainMenuController : MonoBehaviour
         quitButton.onClick.AddListener(OnQuitButtonPressed);
     }
 
+    private void OnDisable()
+    {
+        playButton.onClick.RemoveListener(OnPlayButtonPressed);
+        creditsButton.onClick.RemoveListener(OnCreditsButtonPressed);
+        quitButton.onClick.RemoveListener(OnQuitButtonPressed);
+    }
+
     public async void OnPlayButtonPressed()
     {
-        await SceneLoader.Instance.LoadSceneGroup(1, true);
+        await SceneLoader.Instance.LoadSceneGroup((int)ESceneGroupIndex.Gameplay, true);
     }
 
     public void OnCreditsButtonPressed() 

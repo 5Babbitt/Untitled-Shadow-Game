@@ -14,7 +14,7 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private Vector2 moveInput;
 
     [Header("Player Settings")]
-    [SerializeField] private bool isShadow;
+    public bool isShadow;
     [SerializeField] private HumanMovement human;
     [SerializeField] private ShadowMovement shadow;
     [SerializeField] private PlayerInteractor interactor;

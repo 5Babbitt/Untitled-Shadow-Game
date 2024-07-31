@@ -313,14 +313,21 @@ MonoBehaviour:
   - GroupName: Gameplay
     Scenes:
     - Reference:
-        asset: {fileID: 102900000, guid: cffa85701d17df647ada3bda7bfd5b3e, type: 3}
-        guid: cffa85701d17df647ada3bda7bfd5b3e
+        asset: {fileID: 102900000, guid: 72a0d7133f3f4a74895b1b91c741f156, type: 3}
+        guid: 72a0d7133f3f4a74895b1b91c741f156
       Name: Game
       SceneType: 0
     - Reference:
         asset: {fileID: 102900000, guid: c5146b8acc8de1b4c9bc10ad4b28ee0d, type: 3}
         guid: c5146b8acc8de1b4c9bc10ad4b28ee0d
       Name: HUD
+      SceneType: 2
+  - GroupName: EndGame
+    Scenes:
+    - Reference:
+        asset: {fileID: 102900000, guid: a0042eb6264693c4e967003a66ccd5f1, type: 3}
+        guid: a0042eb6264693c4e967003a66ccd5f1
+      Name: End Game UI
       SceneType: 2
 --- !u!114 &2935262345932942589
 MonoBehaviour:

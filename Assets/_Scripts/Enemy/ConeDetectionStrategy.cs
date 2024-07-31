@@ -18,46 +18,32 @@ using UnityEngine;
 
     public bool Execute(Transform player, Transform detector, CountdownTimer timer)
     {
-        if (timer.IsRunning) return false;
+ 
+            if (player == null) return false;
 
-        var directionToPlayer = player.position - detector.position;
-        var angleToPlayer = Vector3.Angle(directionToPlayer, detector.forward);
+            Vector3 directionToPlayer = (player.position - detector.position).normalized;
+            float angleToPlayer = Vector3.Angle(detector.forward, directionToPlayer);
 
-        // If the player is not within the detection angle + outer radius (aka the cone in front of the enemy),
-        // or is within the inner radius, return false
-        if ((!(angleToPlayer < detectionAngle / 2f) || !(directionToPlayer.magnitude < detectionRadius))
-            && !(directionToPlayer.magnitude < innerDetectionRadius))
-            return false;
-
-        // Cast rays to check if the view of the player is obstructed
-        RaycastHit hit;
-        Vector3[] raycastDirections = {
-        directionToPlayer.normalized,
-        (directionToPlayer + Vector3.up * 1f).normalized,
-        (directionToPlayer - Vector3.up * 1f).normalized,
-        (directionToPlayer + Vector3.right * 1f).normalized,
-        (directionToPlayer - Vector3.right * 1f).normalized
-    };
-
-        foreach (var dir in raycastDirections)
-        {
-            if (Physics.Raycast(detector.position, dir, out hit, detectionRadius))
+            if (angleToPlayer < detectionAngle / 2 && Vector3.Distance(detector.position, player.position) <= detectionRadius)
             {
-               // Debug.Log($"I see: {hit.transform.gameObject.name}");
-                if (hit.transform.tag != "Player")
+                RaycastHit hit;
+                Vector3 rayOrigin = detector.position + Vector3.up; // Adjusting the ray origin to eye level
+                if (Physics.Raycast(rayOrigin, directionToPlayer, out hit, detectionRadius))
                 {
-                    return false; // View is obstructed
+                    Debug.DrawRay(rayOrigin, directionToPlayer * detectionRadius, Color.green, 1.0f);
+                    Debug.Log($"Raycast hit: {hit.transform.name}");
+                    if (hit.transform.tag == "Player")
+                    {
+                        return true;
+                    }
                 }
                 else
                 {
-                    timer.Start();
-                    return true;
+                    Debug.DrawRay(rayOrigin, directionToPlayer * detectionRadius, Color.red, 1.0f);
                 }
             }
-        }
-
-        timer.Start();
-        return true;
+            return false;
+        
     }
 
 }

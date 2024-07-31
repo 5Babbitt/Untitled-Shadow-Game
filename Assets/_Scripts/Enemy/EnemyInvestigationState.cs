@@ -34,6 +34,7 @@ public class EnemyInvestigationState : EnemyBaseState
         sensor.RoomCheckComplete = false;
         animator.CrossFade(WalkHash, 0.1f);
         sensor.SusOccurance += ReciecedSusEvent;
+        AudioManager.Instance.PlayMusic(enemy.investigationMusic, true);
         if (sensor.eventHeardInRoom) 
         {
             sensor.eventHeardInRoom = false;

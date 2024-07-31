@@ -16,6 +16,7 @@ public class HumanMovement : PlayerMovement
     [SerializeField] private float walkHeight;
     [SerializeField] private float crouchHeight;
     [SerializeField] private float crouchSpeedModifier;
+    [SerializeField] protected LayerMask groundLayers;
 
     [Header("Gravity Settings")]
     [SerializeField] private float gravityForce;
@@ -76,9 +77,16 @@ public class HumanMovement : PlayerMovement
     void HandleCrouch()
     {
         if (controller.height == walkHeight)
+        {
             isCrouching = true;
+        }
         else
+        {
+            if (!CanStand())
+                return;
+
             isCrouching = false;
+        }
 
         Crouch(isCrouching);
     }
@@ -93,8 +101,24 @@ public class HumanMovement : PlayerMovement
         animator.SetBool("isCrouching", isCrouching);
     }
 
+    bool CanStand()
+    {
+        float crouchDiff = walkHeight - crouchHeight;
+        Vector3 checkPoint = transform.position + (Vector3.up * (crouchHeight + (crouchDiff / 2)));
+
+        if (Physics.CheckSphere(checkPoint, crouchDiff/2, groundLayers))
+            return false;
+
+        return true;
+    }
+
     public void SetCanMove(bool value)
     {
         canMove = value;
+    }
+
+    private void OnDrawGizmos()
+    {
+        
     }
 }
