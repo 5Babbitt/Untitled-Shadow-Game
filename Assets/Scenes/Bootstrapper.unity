@@ -302,6 +302,7 @@ MonoBehaviour:
   fillSpeed: 0.5
   loadingCanvas: {fileID: 4959307044816873424}
   loadingCamera: {fileID: 2028698190647232915}
+  runOnStart: 1
   sceneGroups:
   - GroupName: Main Menu
     Scenes:
