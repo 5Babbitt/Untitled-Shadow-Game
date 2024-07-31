@@ -21,6 +21,13 @@ public class HUDController : Singleton<HUDController>
 
     }
 
+    private void OnEnable()
+    {
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
     private void Start()
     {
         CloseSnippet();

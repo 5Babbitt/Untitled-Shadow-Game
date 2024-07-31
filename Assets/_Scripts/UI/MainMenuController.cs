@@ -13,6 +13,9 @@ public class MainMenuController : MonoBehaviour
 
     private void OnEnable()
     {
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+
         playButton.onClick.AddListener(OnPlayButtonPressed);
         creditsButton.onClick.AddListener(OnCreditsButtonPressed);
         quitButton.onClick.AddListener(OnQuitButtonPressed);
@@ -25,9 +28,10 @@ public class MainMenuController : MonoBehaviour
         quitButton.onClick.RemoveListener(OnQuitButtonPressed);
     }
 
-    public async void OnPlayButtonPressed()
+    public void OnPlayButtonPressed()
     {
-        await SceneLoader.Instance.LoadSceneGroup((int)ESceneGroupIndex.Gameplay, true);
+        // await SceneLoader.Instance.LoadSceneGroup((int)ESceneGroupIndex.Gameplay, true);
+        GameManager.Instance.LoadLevel("Gameplay");
     }
 
     public void OnCreditsButtonPressed() 
@@ -36,7 +40,8 @@ public class MainMenuController : MonoBehaviour
     }
 
     public void OnQuitButtonPressed() 
-    { 
+    {
+        Cursor.lockState = CursorLockMode.None;
         Application.Quit();
     }
 }

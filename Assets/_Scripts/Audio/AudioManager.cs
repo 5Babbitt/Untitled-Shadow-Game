@@ -1,6 +1,5 @@
 using UnityEngine;
 using FiveBabbittGames;
-using static UnityEngine.Rendering.DebugUI;
 using UnityEngine.Audio;
 
 /// <summary>

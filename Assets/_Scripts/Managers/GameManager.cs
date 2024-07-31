@@ -1,5 +1,6 @@
 using UnityEngine;
 using FiveBabbittGames;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// GameManager
@@ -18,13 +19,20 @@ public class GameManager : Singleton<GameManager>
     public void GameOver()
     {
         isGameOver = true;
-        SceneLoader.Instance.LoadSceneGroup((int)ESceneGroupIndex.EndGame, true);
+        //await SceneLoader.Instance.LoadSceneGroup((int)ESceneGroupIndex.EndGame, true);
+        LoadLevel("EndGame");
     }
 
     public void Escaped()
     {
         isGameOver = false;
-        SceneLoader.Instance.LoadSceneGroup((int)ESceneGroupIndex.EndGame, true);
+        //await SceneLoader.Instance.LoadSceneGroup((int)ESceneGroupIndex.EndGame, true);
+        LoadLevel("EndGame");
 
+    }
+
+    public async void LoadLevel(string sceneName)
+    {
+        await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
     }
 }

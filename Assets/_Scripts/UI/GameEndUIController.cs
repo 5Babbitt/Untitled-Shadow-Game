@@ -14,7 +14,10 @@ public class GameEndUIController : MonoBehaviour
 
     private void OnEnable()
     {
-        menuButton.onClick.AddListener(() => SceneLoader.Instance.LoadSceneGroup((int)ESceneGroupIndex.Main_Menu, true));
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+
+        menuButton.onClick.AddListener(LoadMainMenu);
 
         gameOver.gameObject.SetActive(GameManager.Instance.IsGameOver);
         escaped.gameObject.SetActive(!GameManager.Instance.IsGameOver);
@@ -22,6 +25,12 @@ public class GameEndUIController : MonoBehaviour
 
     private void OnDisable()
     {
-        menuButton.onClick.RemoveListener(() => SceneLoader.Instance.LoadSceneGroup((int)ESceneGroupIndex.Main_Menu, true));
+        menuButton.onClick.RemoveListener(LoadMainMenu);
+    }
+
+    void LoadMainMenu()
+    {
+        //await SceneLoader.Instance.LoadSceneGroup((int)ESceneGroupIndex.Main_Menu, true);
+        GameManager.Instance.LoadLevel("MainMenu");
     }
 }
