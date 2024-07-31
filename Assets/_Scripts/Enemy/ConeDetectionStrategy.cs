@@ -31,7 +31,7 @@ using UnityEngine;
                 if (Physics.Raycast(rayOrigin, directionToPlayer, out hit, detectionRadius))
                 {
                     Debug.DrawRay(rayOrigin, directionToPlayer * detectionRadius, Color.green, 1.0f);
-                    Debug.Log($"Raycast hit: {hit.transform.name}");
+                    // Debug.Log($"Raycast hit: {hit.transform.name}");
                     if (hit.transform.tag == "Player")
                     {
                         return true;
