@@ -232,7 +232,7 @@ public class EnemySense : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-
+            GameManager.Instance.GameOver();
         }
     }
 }
