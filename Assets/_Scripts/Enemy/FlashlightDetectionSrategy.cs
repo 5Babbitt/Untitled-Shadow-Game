@@ -10,7 +10,7 @@ public class FlashlightDetectionStrategy : IDetectionStrategy
     public EnemySense sensor;
 
     private float targetIntensity;
-    private float intensityChangeSpeed = 2f; // Speed at which the intensity changes
+    private float intensityChangeSpeed = 10f; // Speed at which the intensity changes
 
     public FlashlightDetectionStrategy(float detectionRadius, Transform flashlightTransform, LayerMask obstructionMasks, EnemySense sensor)
     {
@@ -51,7 +51,7 @@ public class FlashlightDetectionStrategy : IDetectionStrategy
                 Debug.DrawRay(hit.point, Vector3.up * 0.5f, Color.green, 0.5f); // Small line to indicate hit point
 
                 // Increase the flashlight intensity
-                targetIntensity = 2f; // Set to the desired intensity when player is detected
+                targetIntensity = 50f; // Set to the desired intensity when player is detected
                 flashlight.intensity = Mathf.Lerp(flashlight.intensity, targetIntensity, Time.deltaTime * intensityChangeSpeed);
 
                 return true; // Player detected
@@ -67,7 +67,7 @@ public class FlashlightDetectionStrategy : IDetectionStrategy
         }
 
         // Decrease the flashlight intensity if player is not detected
-        targetIntensity = 0.5f; // Set to the desired intensity when player is not detected
+        targetIntensity = 1f; // Set to the desired intensity when player is not detected
         flashlight.intensity = Mathf.Lerp(flashlight.intensity, targetIntensity, Time.deltaTime * intensityChangeSpeed);
 
         return false;

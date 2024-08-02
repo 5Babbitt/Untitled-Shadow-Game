@@ -5,7 +5,7 @@ public class SubSystemFlashlight : MonoBehaviour
     public bool FlashlightEnabled { get; set; }
     private Light flashlight;
     private Transform playerTransform;
-    private float rotationSpeed = 5f; // Speed at which the flashlight rotates towards the player
+    private float rotationSpeed = 10f; // Speed at which the flashlight rotates towards the player
 
     void Awake()
     {
@@ -34,7 +34,7 @@ public class SubSystemFlashlight : MonoBehaviour
         }
         else if (flashlight != null)
         {
-            flashlight.enabled = false;
+           // flashlight.enabled = false;
         }
     }
 }
