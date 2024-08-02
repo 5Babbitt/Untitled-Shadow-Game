@@ -48,8 +48,8 @@ public class Enemy : MonoBehaviour
         
         At(from:wanderState,to:chaseState,condition:new FuncPredicate(() => enemySense.CanActuallyDetectPlayer()));
         At(from: chaseState, to: wanderState, condition: new FuncPredicate(() => !enemySense.CanActuallyDetectPlayer()));
-        At(from: wanderState, to: investigationState, condition: new FuncPredicate(() => enemySense.eventHeardOutOfRoom));
-        At(from: wanderState, to: investigationState, condition: new FuncPredicate(() => enemySense.eventHeardInRoom));
+        Any(to: investigationState, condition: new FuncPredicate(() => enemySense.eventHeardOutOfRoom));
+        Any(to: investigationState, condition: new FuncPredicate(() => enemySense.eventHeardInRoom));
         At(from:investigationState,to: wanderState, condition: new FuncPredicate(() => enemySense.RoomCheckComplete));
         At(from: investigationState, to: chaseState, condition: new FuncPredicate(() => enemySense.CanActuallyDetectPlayer()));
         stateMachine.SetState(wanderState);

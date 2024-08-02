@@ -1,6 +1,5 @@
 using FiveBabbittGames;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class FlashlightDetectionStrategy : IDetectionStrategy
 {
@@ -10,7 +9,10 @@ public class FlashlightDetectionStrategy : IDetectionStrategy
     readonly LayerMask obstructionMasks;
     public EnemySense sensor;
 
-    public FlashlightDetectionStrategy(float detectionRadius, Transform flashlightTransform, LayerMask obstructionMasks,EnemySense sensor)
+    private float targetIntensity;
+    private float intensityChangeSpeed = 2f; // Speed at which the intensity changes
+
+    public FlashlightDetectionStrategy(float detectionRadius, Transform flashlightTransform, LayerMask obstructionMasks, EnemySense sensor)
     {
         this.detectionRadius = detectionRadius;
         this.flashlightTransform = flashlightTransform;
@@ -43,25 +45,30 @@ public class FlashlightDetectionStrategy : IDetectionStrategy
             {
                 timer.Start();
                 Debug.Log($"Detected {hit.transform.name} and it is the player");
-                Vector3 hitLocation = player.position - flashlightTransform.position;
+
                 // Visualize the hit with a line and sphere at the hit point
                 Debug.DrawLine(flashlightTransform.position, hit.point, Color.green, 0.5f);
                 Debug.DrawRay(hit.point, Vector3.up * 0.5f, Color.green, 0.5f); // Small line to indicate hit point
-                //sensor.enemyFlashObject.GetComponent<SubSystemFlashlight>().FlashlightEnabled = true;
-                Quaternion targetRotation = Quaternion.LookRotation(hitLocation);
-               //sensor.enemyFlashObject.transform.rotation = Quaternion.Slerp(sensor.enemyFlashObject.transform.rotation, targetRotation, Time.deltaTime * 10f);
+
+                // Increase the flashlight intensity
+                targetIntensity = 2f; // Set to the desired intensity when player is detected
+                flashlight.intensity = Mathf.Lerp(flashlight.intensity, targetIntensity, Time.deltaTime * intensityChangeSpeed);
 
                 return true; // Player detected
             }
             else
             {
                 Debug.Log($"Detected {hit.transform.name} but it is not the player. Obstructed by: {hit.transform.tag}");
-                //sensor.enemyFlashObject.GetComponent<SubSystemFlashlight>().FlashlightEnabled = false;
+
                 // Visualize the obstruction with a line and sphere at the hit point
                 Debug.DrawLine(flashlightTransform.position, hit.point, Color.red, 0.5f);
                 Debug.DrawRay(hit.point, Vector3.up * 0.5f, Color.red, 0.5f); // Small line to indicate obstruction point
             }
         }
+
+        // Decrease the flashlight intensity if player is not detected
+        targetIntensity = 0.5f; // Set to the desired intensity when player is not detected
+        flashlight.intensity = Mathf.Lerp(flashlight.intensity, targetIntensity, Time.deltaTime * intensityChangeSpeed);
 
         return false;
     }
