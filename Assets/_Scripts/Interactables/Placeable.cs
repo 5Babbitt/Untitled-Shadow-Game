@@ -11,13 +11,20 @@ public class Placeable : Interactable
     [SerializeField] protected Carriable carrySlot;
     [SerializeField] protected Vector3 dimensions = Vector3.one;
     private BoxCollider placementCollider;
-
+    public EnemyEventBroadcaster enemyEventBroadcaster;
     public KeyData KeyData;
 
     public override void Start()
     {
         base.Start();
         placementCollider = GetComponent<BoxCollider>();
+        if(enemyEventBroadcaster == null)
+        {
+            this.gameObject.AddComponent<EnemyEventBroadcaster>();
+            enemyEventBroadcaster = GetComponent<EnemyEventBroadcaster>();
+            enemyEventBroadcaster.type = EnemyEventBroadcaster.ObjectType.Puzzle;
+        }
+
     }
 
     public override void OnInteract(PlayerInteractor interactingPlayer)
@@ -30,7 +37,11 @@ public class Placeable : Interactable
             return;
 
         if (!KeyDataMatch(playerCarry))
+        {
+            enemyEventBroadcaster.InvokeSusOccurrence();
             return;
+        }
+
 
         carrySlot = interactingPlayer.GetCarriable();
         carrySlot.transform.SetParent(transform);

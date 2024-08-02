@@ -46,7 +46,7 @@ public class EnemyInvestigationState : EnemyBaseState
         {
             sensor.eventHeardOutOfRoom = false;
             enemy.Suspicion = 50f;
-            agent.SetDestination(sensor.currentRoom.enemyEnterance.position);
+            agent.SetDestination(sensor.currentRoom.enemyEntrance.position);
             SetSubstate(ReturnSubstateOfType(Enemy.Substates.Substate.CheckingRandomPoints));
         }
 
@@ -166,7 +166,7 @@ public class EnemyInvestigationState : EnemyBaseState
     {
         return !agent.pathPending
                && agent.remainingDistance <= agent.stoppingDistance
-               && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f);
+               && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f) || InvestigatingEvent();
     }
 
 }

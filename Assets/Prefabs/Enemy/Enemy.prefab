@@ -131,9 +131,10 @@ GameObject:
   - component: {fileID: 7687264029282343564}
   - component: {fileID: 1927809331380418647}
   - component: {fileID: 6474990618737573675}
+  - component: {fileID: 2773102252846427234}
   m_Layer: 10
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -191,7 +192,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 5756918440829645189}
-  animator: {fileID: 0}
+  animator: {fileID: 4342732787801554892}
   patrolPointParent: {fileID: 0}
   enemySense: {fileID: 1927809331380418647}
   Suspicion: 10
@@ -218,8 +219,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8219a638302cb354dbde1eac5323d59e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionAngle: 180
-  detectionRadius: 20
+  detectionAngle: 120
+  detectionRadius: 6
   innerDetectionRadius: 5
   detectCooldown: 0.16
   loseSightCooldown: 5
@@ -240,11 +241,34 @@ MonoBehaviour:
     m_Bits: 128
   obstructionMasks:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2824
   PlayerIsShadow: 0
   enemyFlashlight: {fileID: 1707573446661220482}
   agent: {fileID: 0}
 --- !u!136 &6474990618737573675
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2681639891928177292}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.9
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &2773102252846427234
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

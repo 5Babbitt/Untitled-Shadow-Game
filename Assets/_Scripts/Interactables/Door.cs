@@ -37,6 +37,18 @@ public class Door : Placeable
         UpdateInteractText();
     }
 
+    public void EnemyOpen()
+    {
+        if (isOpen)
+        {
+            Close();
+        }
+        else
+        {
+            Close();
+        }
+    }
+
     public override void OnFocus()
     {
         UpdateInteractText();

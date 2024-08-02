@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
 public class EnemySense : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class EnemySense : MonoBehaviour
     public LayerMask obstructionMasks;
     [HideInInspector] public bool PlayerIsShadow;
     public Light enemyFlashlight;
+    public GameObject enemyFlashObject;
     public NavMeshAgent agent; // Reference to the NavMeshAgent
     private bool canSeePlayer;
 
@@ -42,12 +44,19 @@ public class EnemySense : MonoBehaviour
         loseSightTimer = new CountdownTimer(loseSightCooldown);
         playerController = FindAnyObjectByType<PlayerController>();
 
-        coneDetectionStrategy = new ConeDetectionStrategy(detectionAngle, detectionRadius, innerDetectionRadius);
-        flashlightDetectionStrategy = new FlashlightDetectionStrategy(detectionRadius, enemyFlashlight.transform);
+
         currentDetectionStrategy = coneDetectionStrategy; // Start with cone detection
 
         SusOccurance += OnTransformReceived;
     }
+
+
+    private void Awake()
+    {
+        coneDetectionStrategy = new ConeDetectionStrategy(detectionAngle, detectionRadius, innerDetectionRadius);
+        flashlightDetectionStrategy = new FlashlightDetectionStrategy(detectionRadius, enemyFlashObject.transform, obstructionMasks, this);
+    }
+
 
     private void OnDestroy()
     {
@@ -86,9 +95,6 @@ public class EnemySense : MonoBehaviour
         loseSightTimer.Tick(Time.deltaTime);
 
         player = playerController.CurrentActivePlayer.transform;
-
-        PlayerIsShadow = playerController.CurrentActivePlayer is ShadowMovement;
-
         PlayerIsShadow = playerController.isShadow;
 
         bool playerDetected = currentDetectionStrategy.Execute(player, detector: transform, detectionTimer);
@@ -99,20 +105,23 @@ public class EnemySense : MonoBehaviour
             canSeePlayer = true;
 
             // Track player with flashlight
-            if(PlayerIsShadow)
+            if (PlayerIsShadow)
             {
-                Debug.Log("Moving flashlight");
-                Vector3 directionToPlayer = player.position - enemyFlashlight.transform.position;
+                Vector3 directionToPlayer = player.position - enemyFlashlight.gameObject.transform.position;
                 Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-                enemyFlashlight.transform.rotation = Quaternion.Slerp(enemyFlashlight.transform.rotation, targetRotation, Time.deltaTime * 10f);
+                enemyFlashlight.transform.rotation = Quaternion.Slerp(enemyFlashlight.gameObject.transform.rotation, targetRotation, Time.deltaTime * 10f);
+                currentDetectionStrategy = coneDetectionStrategy;
             }
-           
+            else
+            {
+                currentDetectionStrategy = flashlightDetectionStrategy;
+            }
 
-            if(agent == null)
+            if (agent == null)
             {
                 agent = GetComponent<NavMeshAgent>();
             }
-            // Set agent stopping distanc
+            // Set agent stopping distance
             agent.stoppingDistance = PlayerIsShadow ? stoppingDistanceShadow : stoppingDistanceHuman;
             agent.SetDestination(player.position);
 
@@ -121,7 +130,7 @@ public class EnemySense : MonoBehaviour
             {
                 float spherecastRadius = enemyFlashlight.spotAngle / 2;
                 RaycastHit hit;
-                if (Physics.SphereCast(enemyFlashlight.transform.position, spherecastRadius, enemyFlashlight.transform.forward, out hit, detectionRadius))
+                if (Physics.SphereCast(enemyFlashlight.transform.position, spherecastRadius, enemyFlashObject.transform.forward, out hit, detectionRadius, ~obstructionMasks))
                 {
                     if (hit.transform == player)
                     {
@@ -142,17 +151,14 @@ public class EnemySense : MonoBehaviour
             canSeePlayer = false;
         }
 
-
         // Switch detection strategies based on PlayerIsShadow
         currentDetectionStrategy = PlayerIsShadow ? flashlightDetectionStrategy : coneDetectionStrategy;
     }
-
 
     public bool CanActuallyDetectPlayer()
     {
         return canSeePlayer;
     }
-
 
     public void InvokeSusOccurrence(Transform eventTransform, Room detectedRoom)
     {
@@ -179,13 +185,14 @@ public class EnemySense : MonoBehaviour
             Vector3 forward = enemyFlashlight.transform.forward * detectionRadius;
             Gizmos.color = Color.green;
             Gizmos.DrawRay(enemyFlashlight.transform.position, forward);
-
+            enemyFlashObject.GetComponent<SubSystemFlashlight>().FlashlightEnabled = true;
             RaycastHit hit;
             if (Physics.SphereCast(enemyFlashlight.transform.position, enemyFlashlight.spotAngle / 2, enemyFlashlight.transform.forward, out hit, detectionRadius))
             {
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawLine(enemyFlashlight.transform.position, hit.point);
                 Gizmos.DrawSphere(hit.point, 0.2f);
+                enemyFlashObject.GetComponent<SubSystemFlashlight>().FlashlightEnabled = false;
             }
         }
         else
@@ -230,9 +237,10 @@ public class EnemySense : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if (other.tag == "Player")
         {
-            GameManager.Instance.GameOver();
+            //  GameManager.Instance.GameOver();
+            Debug.Log("Invoke game over");
         }
     }
 }
