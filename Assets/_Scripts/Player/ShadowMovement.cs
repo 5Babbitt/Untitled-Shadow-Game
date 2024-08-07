@@ -1,6 +1,7 @@
 using Cinemachine;
 using FiveBabbittGames;
 using UnityEngine;
+using UnityEngine.AI;
 
 /// <summary>
 /// ShadowMovement
@@ -29,6 +30,9 @@ public class ShadowMovement : PlayerMovement
     [Header("Check Settings")]
     [SerializeField] private float checkRadius = 0.4f;
     [SerializeField] private float checkHeight = 0.4f;
+
+    [Header("NavMesh Settings")]
+    [SerializeField] private float navMeshSampleDistance = 2f;
 
     protected override void Awake()
     {
@@ -114,21 +118,44 @@ public class ShadowMovement : PlayerMovement
 
     public bool CanSwitch(bool drawGizmos = false)
     {
-        for (int i = 0; i < 3; i++)
+        Vector3 samplePosition;
+        if (FindNearestClearPoint(out samplePosition))
         {
-            if (drawGizmos)
+            for (int i = 0; i < 3; i++)
             {
-                Gizmos.DrawWireSphere(transform.position + ((Vector3.up * 1.001f) * checkHeight * ((i * 2) + 1)), checkRadius);
+                if (drawGizmos)
+                {
+                    Gizmos.DrawWireSphere(samplePosition + ((Vector3.up * 1.001f) * checkHeight * ((i * 2) + 1)), checkRadius);
+                }
+
+                if (Physics.CheckSphere(samplePosition + ((Vector3.up * 1.001f) * checkHeight * ((i * 2) + 1)), checkRadius, groundLayers))
+                {
+                    return false;
+                }
             }
 
-            if (Physics.CheckSphere(transform.position + ((Vector3.up * 1.001f) * checkHeight * ((i * 2) + 1)), checkRadius, groundLayers))
-            {
-                return false;
-            }
+            return true;
         }
 
-        return true;
+        return false;
     }
+
+    public bool FindNearestClearPoint(out Vector3 samplePosition)
+    {
+        samplePosition = Vector3.zero;
+        NavMeshHit navMeshHit;
+
+        int walkableMask = 1 << NavMesh.GetAreaFromName("Walkable");
+
+        if (NavMesh.SamplePosition(transform.position, out navMeshHit, navMeshSampleDistance, walkableMask))
+        {
+            samplePosition = navMeshHit.position;
+            return true;
+        }
+
+        return false;
+    }
+
 
     private void OnDrawGizmos()
     {
