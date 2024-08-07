@@ -30,8 +30,8 @@ public class PlayerController : Singleton<PlayerController>
         human = GetComponentInChildren<HumanMovement>();
         shadow = GetComponentInChildren<ShadowMovement>();
         interactor = GetComponent<PlayerInteractor>();
-    } 
-    
+    }
+
     void Start()
     {
         cam = Camera.main;
@@ -72,12 +72,18 @@ public class PlayerController : Singleton<PlayerController>
             return;
         }
 
-
         if (value)
         {
-            human.transform.position = shadow.transform.position;
+            if (shadow.FindNearestClearPoint(out Vector3 clearPosition))
+            {
+                human.transform.position = clearPosition;
+            }
+            else
+            {
+                human.transform.position = shadow.transform.position;
+            }
 
-            interactor.ClearInteractable(); 
+            interactor.ClearInteractable();
             interactor.enabled = true;
         }
         else
@@ -87,7 +93,7 @@ public class PlayerController : Singleton<PlayerController>
             interactor.carrySlot.Drop();
             interactor.ClearInteractable();
             interactor.enabled = false;
-            
+
             if (HUDController.Instance != null)
                 HUDController.Instance.SetInteractText();
         }
@@ -125,7 +131,7 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
-    void OnInteract(InputValue inputValue) 
+    void OnInteract(InputValue inputValue)
     {
         Interact();
     }
