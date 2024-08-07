@@ -145,7 +145,9 @@ public class ShadowMovement : PlayerMovement
         samplePosition = Vector3.zero;
         NavMeshHit navMeshHit;
 
-        if (NavMesh.SamplePosition(transform.position, out navMeshHit, navMeshSampleDistance, NavMesh.AllAreas))
+        int walkableMask = 1 << NavMesh.GetAreaFromName("Walkable");
+
+        if (NavMesh.SamplePosition(transform.position, out navMeshHit, navMeshSampleDistance, walkableMask))
         {
             samplePosition = navMeshHit.position;
             return true;
@@ -153,6 +155,7 @@ public class ShadowMovement : PlayerMovement
 
         return false;
     }
+
 
     private void OnDrawGizmos()
     {
