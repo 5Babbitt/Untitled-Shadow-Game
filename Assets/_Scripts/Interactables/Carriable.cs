@@ -51,9 +51,13 @@ public class Carriable : Interactable
 
     public void PickUp(PlayerInteractor interactingPlayer)
     {
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true;
+        rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+
         isCarried = true;
         interactableCollider.enabled = false;
-        GetComponent<Rigidbody>().isKinematic = true;
+
         transform.SetParent(player.carrySlot.carryTransform);
         transform.position = player.carrySlot.carryTransform.position;
         interactingPlayer.SetCarriable(this);
@@ -61,9 +65,13 @@ public class Carriable : Interactable
 
     public void Drop(PlayerInteractor interactingPlayer)
     {
-        isCarried = false;
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.isKinematic = false;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+
         interactableCollider.enabled = true;
-        GetComponent<Rigidbody>().isKinematic = false;
+        isCarried = false;
+
         transform.SetParent(null);
         interactingPlayer.SetCarriable(null);
     }
